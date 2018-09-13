@@ -1,5 +1,9 @@
 # flss-server
-Flipped Learning Support System - Server
+
+## Commit rules
+```
+[ADD|FIX|REMOVE] content....
+```
 
 ## Project setup
 ```
