@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script>
+        var socket = new io(location.origin.replace(':'+location.port, '') + ':3030')
+        socket.on('connect', function(data){
+            console.log('connect')
+        })
+    </script>
+    <title>Socket Test</title>
+</head>
+
+<body>
+    
+</body>
+
+</html>

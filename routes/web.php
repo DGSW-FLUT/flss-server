@@ -11,4 +11,5 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('classting', 'OAuthController@classting');
         $router->get('classting_handle', 'OAuthController@classtingHandle');
     });
+    
 });
