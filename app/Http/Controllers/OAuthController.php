@@ -18,11 +18,10 @@ class OAuthController
     {
         $redirect_uri = 'https://oauth.classting.com/v1/oauth2/authorize';
         $redirect_uri .= '?client_id=' . $_ENV["CLASSTING_CLIENT_ID"];
-        $redirect_uri .= '&redirect_uri=' . $_ENV['SERVER_HOST'] . '/auth/get_token';
+        $redirect_uri .= '&redirect_uri=' . $_ENV['SERVER_HOST'] . '/api/auth/get_token';
         $redirect_uri .= '&response_type=' . 'token';
         return redirect($redirect_uri);
     }
-    // 학생의 글 조회 -> 
     
     public function classtingHandle()
     {
