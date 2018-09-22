@@ -6,59 +6,80 @@ use Illuminate\Database\Eloquent\Model;
 
 class ClassRoom extends Model {
     /**
-     * ClassRoom Identifier Number 
+     * ClassRoom Identifier Number
+     * 클래스 ID
      * @var int
      */
     protected $id;
 
     /**
      * Classroom Url
+     * 클래스 URL (클래스팅의 url)
      * @var string
      */
     protected $url;
 
     /**
      * Classroom Year
+     * 클래스 년도
      * @var int
      */
     protected $year;
     
     /*
      * Classroom Name
+     * 클래스 이름
      * @var string
      */
     protected $name;
 
     /*
      * Classroom Open Class Boolean
+     * 클래스 공개 여부
      * @var boolean
      */
     protected $is_openclass;
 
     /*
      * Classroom Create Time
+     * 클래스 생성 일자
      * @var DateTime
      */
     protected $created_at;
 
     /*
      * Classroom Profile Image url
+     * 클래스 이미지 url
      * @var string
      * */
     protected $profile_image;
 
     /*
      * Classroom School Name
+     * 클래스가 속한 학교
      * @var string
      * */
     protected $school_name;
 
     /*
      * Classroom Member Count
+     * 클래스에 포함된 멤버 수
      * @var int
      * */
     protected $member_count;
 
+    /**
+     * ClassRoom constructor.
+     * @param $id
+     * @param $url
+     * @param $year
+     * @param $name
+     * @param $is_openclass
+     * @param $created_at
+     * @param $member_count
+     * @param $profile_image
+     * @param $school_name
+     */
     public function __construct($id, $url, $year, $name, $is_openclass, $created_at, $member_count, $profile_image, $school_name)
     {
         $this->setId($id);
