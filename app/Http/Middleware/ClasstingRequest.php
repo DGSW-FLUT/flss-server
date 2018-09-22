@@ -7,7 +7,6 @@ class ClasstingRequest
     private $ACCESS_TOKEN;
     private $CLASSTING_URL = "https://api.classting.com:443";
 
-
     /**
      * ClasstingRequest 생성자.
      * @param $ACCESS_TOKEN string Access Token
@@ -18,6 +17,7 @@ class ClasstingRequest
     }
 
     /**
+     * Classting에 Request를 보냅니다.
      * @param $url string 클래스팅 url (v2/* 부터 시작)
      *
      * @return mixed 값 리턴
