@@ -31,6 +31,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
          */
         $router->get('info', 'ClassController@getClassInfo');
 
+
     });
     
 });
