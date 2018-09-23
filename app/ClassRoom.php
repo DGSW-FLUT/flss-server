@@ -5,7 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class ClassModel{
+class ClassModel
+{
     /**
      * ClassRoom Identifier Number
      * 클래스 ID
@@ -62,25 +63,25 @@ class ClassModel{
      * */
     protected $school_name;
 
-    /*
-     * Classroom Member Count
-     * 클래스에 포함된 멤버 수
-     * @var int
-     * */
-    protected $member_count;
-
-    public function __construct($id, $url, $year, $name, $is_openclass, $created_at, $member_count, $profile_image, $school_name)
-    {
-        $this->id = $id;
-        $this->url = $url;
-        $this->year = $year;
-        $this->name = $name;
-        $this->is_openclass = $is_openclass;
-        $this->created_at = $created_at;
-        $this->member_count = $member_count;
-        $this->profile_image = $profile_image;
-        $this->school_name = $school_name;
-    }
+//    /*
+//     * Classroom Member Count
+//     * 클래스에 포함된 멤버 수
+//     * @var int
+//     * */
+//    protected $member_count;
+//
+//    public function __construct($id, $url, $year, $name, $is_openclass, $created_at, $member_count, $profile_image, $school_name)
+//    {
+//        $this->id = $id;
+//        $this->url = $url;
+//        $this->year = $year;
+//        $this->name = $name;
+//        $this->is_openclass = $is_openclass;
+//        $this->created_at = $created_at;
+//        $this->member_count = $member_count;
+//        $this->profile_image = $profile_image;
+//        $this->school_name = $school_name;
+//    }
 
     /**
      * @return int
@@ -234,25 +235,57 @@ class ClassRoom extends Model
 
     public function getClassInfoDB($token, $id)
     {
-        $request = new ClasstingRequest($token);
         $data = DB::select('select * from Class where cid = ?', [$id]);
         return $data;
     }
 
-    public function getClassInfo($token, $classId){
-        $request = new ClasstingRequest($token);
-        return $request->Ting_Get('/v2/classes/'.$classId);
+    /**
+     * @param ClassModel $classModel
+     */
+    public function addClassModel(ClassModel $classModel): bool
+    {
+        $count = DB::table('Class')->where('CTid', '=', $classModel->getId())->count();
+        if ($count == 0)
+        {
+            return DB::table('Class')->insert([
+                'CTid' => $classModel->getId(),
+                'Name' => $classModel->getName(),
+                'URL' => $classModel->getUrl(),
+                'Profile' => $classModel->getProfileImage()
+            ]);
+        }
+        return false;
+  }
 
+    public function addClassInfo($classInfo)
+    {
+        $classModel = new ClassModel();
+        $classModel->setId((int)$classInfo['id']);
+        $classModel->setName($classInfo['name']);
+        $classModel->setUrl($classInfo['url']);
+        $classModel->setProfileImage($classInfo['profile_image']);
+        $this->addClassModel($classModel);
+        return $classModel;
     }
 
-    public function getClassMember($token, $classId){
+    public function getClassInfo($token, $classId)
+    {
         $request = new ClasstingRequest($token);
-        return $request->Ting_Get('/v2/classes/'.$classId.'/members');
+        $data = $request->Ting_Get('/v2/classes/' . $classId);
+        $this->addClassInfo($data);
+        return $data;
     }
 
-    public function getClassList($token, $userId){
+    public function getClassMember($token, $classId)
+    {
         $request = new ClasstingRequest($token);
-        return $request->Ting_Get('/v2/users/'.$userId.'/joined_classes');
+        return $request->Ting_Get('/v2/classes/' . $classId . '/members');
+    }
+
+    public function getClassList($token, $userId)
+    {
+        $request = new ClasstingRequest($token);
+        return $request->Ting_Get('/v2/users/' . $userId . '/joined_classes');
     }
 
 }
