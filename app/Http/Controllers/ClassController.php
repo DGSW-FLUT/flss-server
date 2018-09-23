@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Http\Middleware\ClasstingRequest;
+use App\ClassRoom;
 
 class ClassController
 {
@@ -31,10 +31,8 @@ class ClassController
     {
         $token = $this->request->query('token');
         $uid = $this->request->query('uid');
-
-        $request = new ClasstingRequest($token);
-        $data = $request->Ting_Get('/v2/users/'.$uid.'/joined_classes');
-        return response()->json($data, Response::HTTP_OK);
+        $classRoom = new ClassRoom();
+        return response()->json($classRoom->getClassList($token, $uid), Response::HTTP_OK);
     }
 
     /*
@@ -46,10 +44,8 @@ class ClassController
     public function getClassMember(){
         $token = $this->request->query('token');
         $cid = $this->request->query('cid');
-
-        $request = new ClasstingRequest($token);
-        $data = $request->Ting_Get('/v2/classes/'.$cid.'/members');
-        return response()->json($data, Response::HTTP_OK);
+        $classRoom = new ClassRoom();
+        return response()->json($classRoom->getClassMember($token, $cid), Response::HTTP_OK);
     }
 
     /*
@@ -61,10 +57,10 @@ class ClassController
     public function getClassInfo(){
         $token = $this->request->query('token');
         $cid = $this->request->query('cid');
-
-        $request = new ClasstingRequest($token);
-        $data = $request->Ting_Get('/v2/classes/'.$cid);
-        return response()->json($data, Response::HTTP_OK);
+        $classRoom = new ClassRoom();
+        return response()->json($classRoom->getClassInfo($token, $cid), Response::HTTP_OK);
     }
+
+
 
 }

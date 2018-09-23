@@ -3,8 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
-class ClassRoom extends Model {
+class ClassModel{
     /**
      * ClassRoom Identifier Number
      * 클래스 ID
@@ -25,7 +26,7 @@ class ClassRoom extends Model {
      * @var int
      */
     protected $year;
-    
+
     /*
      * Classroom Name
      * 클래스 이름
@@ -68,29 +69,17 @@ class ClassRoom extends Model {
      * */
     protected $member_count;
 
-    /**
-     * ClassRoom constructor.
-     * @param $id
-     * @param $url
-     * @param $year
-     * @param $name
-     * @param $is_openclass
-     * @param $created_at
-     * @param $member_count
-     * @param $profile_image
-     * @param $school_name
-     */
     public function __construct($id, $url, $year, $name, $is_openclass, $created_at, $member_count, $profile_image, $school_name)
     {
-        $this->setId($id);
-        $this->setUrl($url);
-        $this->setYear($year);
-        $this->setName($name);
-        $this->setIsOpenclass($is_openclass);
-        $this->setCreatedAt($created_at);
-        $this->setMemberCount($member_count);
-        $this->setProfileImage($profile_image);
-        $this->setSchoolName($school_name);
+        $this->id = $id;
+        $this->url = $url;
+        $this->year = $year;
+        $this->name = $name;
+        $this->is_openclass = $is_openclass;
+        $this->created_at = $created_at;
+        $this->member_count = $member_count;
+        $this->profile_image = $profile_image;
+        $this->school_name = $school_name;
     }
 
     /**
@@ -237,5 +226,35 @@ class ClassRoom extends Model {
         $this->member_count = $member_count;
     }
 
+
 }
+
+class ClassRoom extends Model
+{
+
+    public function getClassInfoDB($token, $id)
+    {
+        $request = new ClasstingRequest($token);
+        $data = DB::select('select * from Class where cid = ?', [$id]);
+        return $data;
+    }
+
+    public function getClassInfo($token, $classId){
+        $request = new ClasstingRequest($token);
+        return $request->Ting_Get('/v2/classes/'.$classId);
+
+    }
+
+    public function getClassMember($token, $classId){
+        $request = new ClasstingRequest($token);
+        return $request->Ting_Get('/v2/classes/'.$classId.'/members');
+    }
+
+    public function getClassList($token, $userId){
+        $request = new ClasstingRequest($token);
+        return $request->Ting_Get('/v2/users/'.$userId.'/joined_classes');
+    }
+
+}
+
 ?>
