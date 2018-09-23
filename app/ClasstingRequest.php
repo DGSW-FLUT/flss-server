@@ -31,8 +31,11 @@ class ClasstingRequest
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
             'Authorization : Bearer '.$this->ACCESS_TOKEN
         ));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $output = curl_exec($curl);
-        return $output;
+        curl_close($curl);
+        return get_object_vars(json_decode($output));
+
     }
 
 }
