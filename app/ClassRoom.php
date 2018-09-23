@@ -3,8 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
-class ClassRoom extends Model {
+class ClassModel
+{
     /**
      * ClassRoom Identifier Number
      * 클래스 ID
@@ -25,7 +27,7 @@ class ClassRoom extends Model {
      * @var int
      */
     protected $year;
-    
+
     /*
      * Classroom Name
      * 클래스 이름
@@ -61,37 +63,25 @@ class ClassRoom extends Model {
      * */
     protected $school_name;
 
-    /*
-     * Classroom Member Count
-     * 클래스에 포함된 멤버 수
-     * @var int
-     * */
-    protected $member_count;
-
-    /**
-     * ClassRoom constructor.
-     * @param $id
-     * @param $url
-     * @param $year
-     * @param $name
-     * @param $is_openclass
-     * @param $created_at
-     * @param $member_count
-     * @param $profile_image
-     * @param $school_name
-     */
-    public function __construct($id, $url, $year, $name, $is_openclass, $created_at, $member_count, $profile_image, $school_name)
-    {
-        $this->setId($id);
-        $this->setUrl($url);
-        $this->setYear($year);
-        $this->setName($name);
-        $this->setIsOpenclass($is_openclass);
-        $this->setCreatedAt($created_at);
-        $this->setMemberCount($member_count);
-        $this->setProfileImage($profile_image);
-        $this->setSchoolName($school_name);
-    }
+//    /*
+//     * Classroom Member Count
+//     * 클래스에 포함된 멤버 수
+//     * @var int
+//     * */
+//    protected $member_count;
+//
+//    public function __construct($id, $url, $year, $name, $is_openclass, $created_at, $member_count, $profile_image, $school_name)
+//    {
+//        $this->id = $id;
+//        $this->url = $url;
+//        $this->year = $year;
+//        $this->name = $name;
+//        $this->is_openclass = $is_openclass;
+//        $this->created_at = $created_at;
+//        $this->member_count = $member_count;
+//        $this->profile_image = $profile_image;
+//        $this->school_name = $school_name;
+//    }
 
     /**
      * @return int
@@ -237,5 +227,67 @@ class ClassRoom extends Model {
         $this->member_count = $member_count;
     }
 
+
 }
+
+class ClassRoom extends Model
+{
+
+    public function getClassInfoDB($token, $id)
+    {
+        $data = DB::select('select * from Class where cid = ?', [$id]);
+        return $data;
+    }
+
+    /**
+     * @param ClassModel $classModel
+     */
+    public function addClassModel(ClassModel $classModel): bool
+    {
+        $count = DB::table('Class')->where('CTid', '=', $classModel->getId())->count();
+        if ($count == 0)
+        {
+            return DB::table('Class')->insert([
+                'CTid' => $classModel->getId(),
+                'Name' => $classModel->getName(),
+                'URL' => $classModel->getUrl(),
+                'Profile' => $classModel->getProfileImage()
+            ]);
+        }
+        return false;
+  }
+
+    public function addClassInfo($classInfo)
+    {
+        $classModel = new ClassModel();
+        $classModel->setId((int)$classInfo['id']);
+        $classModel->setName($classInfo['name']);
+        $classModel->setUrl($classInfo['url']);
+        $classModel->setProfileImage($classInfo['profile_image']);
+        $this->addClassModel($classModel);
+        return $classModel;
+    }
+
+    public function getClassInfo($token, $classId)
+    {
+        $request = new ClasstingRequest($token);
+        $data = $request->Ting_Get('/v2/classes/' . $classId);
+        $this->addClassInfo($data);
+        return $data;
+    }
+
+    public function getClassMember($token, $classId)
+    {
+        $request = new ClasstingRequest($token);
+        return $request->Ting_Get('/v2/classes/' . $classId . '/members');
+    }
+
+    public function getClassList($token, $userId)
+    {
+        $request = new ClasstingRequest($token);
+        return $request->Ting_Get('/v2/users/' . $userId . '/joined_classes');
+    }
+
+}
+
 ?>
