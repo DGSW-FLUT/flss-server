@@ -10,7 +10,7 @@ class ClassModel
     /**
      * ClassRoom Identifier Number
      * 클래스 ID
-     * @var int
+     * @var string
      */
     protected $id;
 
@@ -39,12 +39,12 @@ class ClassModel
 
     /**
      * ClassModel setAll.
-     * @param int $id
+     * @param string $id
      * @param string $url
      * @param string $name
      * @param string $profile_image
      */
-    public function setAll(int $id, string $url, string $name, string $profile_image)
+    public function setAll(string $id, string $url, string $name, string $profile_image)
     {
         $this->id = $id;
         $this->url = $url;
@@ -52,16 +52,47 @@ class ClassModel
         $this->profile_image = $profile_image;
     }
 
+    public function setFromDB($id)
+    {
+        $data = DB::table("Class")->select()->where('CTid', '=', $id)->get()->toArray();
+
+        print_r($data);
+        if ($data && $data[0]) {
+            $this->setAllFromArray($data[0]);
+
+            return true;
+        }
+        return false;
+    }
+
     /**
      * ClassModel setFromArray
-     * @param array $classroom
+     * @param array|object $classroom
      */
-    public function setAllFromArray(array $classroom)
+    public function setAllFromArray($classroom)
     {
-        $this->id = (int)$classroom['id'];
-        $this->url = $classroom['url'];
-        $this->name = $classroom['name'];
-        $this->profile_image = $classroom['profile_image'];
+        if (is_object($classroom))
+            $classroom = get_object_vars($classroom);
+
+        if (isset($classroom['id']))
+            $this->id = $classroom['id'];
+        else
+            $this->id = $classroom['CTid'];
+
+        if (isset($classroom['url']))
+            $this->url = $classroom['url'];
+        else
+            $this->url = $classroom['URL'];
+
+        if (isset($classroom['name']))
+            $this->name = $classroom['name'];
+        else
+            $this->name = $classroom['Name'];
+
+        if (isset($classroom['profile_image']))
+            $this->profile_image = $classroom['profile_image'];
+        else
+            $this->profile_image = $classroom['Profile'];
     }
 
     /**
@@ -85,7 +116,8 @@ class ClassModel
      * 해당 model을 DB에 넣습니다.
      * @return bool
      */
-    public function insertDB() {
+    public function insertDB()
+    {
         $count = DB::table('Class')
             ->where('CTid', '=', $this->getId())
             ->count();
@@ -100,23 +132,24 @@ class ClassModel
         return false;
     }
 
-    public function toJSON(){
+    public function expose()
+    {
         return json_encode(get_object_vars($this));
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }
 
     /**
      *
-     * @param int $id
+     * @param string $id
      */
-    public function setId(int $id): void
+    public function setId(string $id): void
     {
         $this->id = $id;
     }
@@ -202,7 +235,6 @@ class ClassRoom extends Model
     }
 
 
-
     /**
      * @param $token
      * @param $classId
@@ -211,9 +243,16 @@ class ClassRoom extends Model
     public function getClassInfo($token, $classId)
     {
         $request = new ClasstingRequest($token);
-        $data = $request->Ting_Get('/v2/classes/' . $classId);
-        $this->addClassInfo($data);
-        return $data;
+        $model = new ClassModel();
+
+        if (!$model->setFromDB($classId)) {
+            $data = $request->Ting_Get('/v2/classes/' . $classId);
+            if ($data == null)
+                return null;
+            $model->setAllFromArray($data);
+            $model->insertDB();
+        }
+        return $model->expose();
     }
 
     /**
@@ -230,16 +269,17 @@ class ClassRoom extends Model
     /**
      * @param $token
      * @param $userId
-     * @return mixed
+     * @return array
      */
     public function getClassList($token, $userId)
     {
         $request = new ClasstingRequest($token);
         $datas = $request->Ting_Get('/v2/users/' . $userId . '/joined_classes');
         $models = ClassModel::getClassesFromObjectArray($datas);
-        foreach($models as $model){
+        foreach ($models as $model) {
             $model->insertDB();
         }
+        return $models;
 
     }
 

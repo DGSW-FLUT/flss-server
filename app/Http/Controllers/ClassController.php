@@ -59,6 +59,7 @@ class ClassController
         $cid = $this->request->query('cid');
         $classRoom = new ClassRoom();
         return response()->json($classRoom->getClassInfo($token, $cid), Response::HTTP_OK);
+//        return $classRoom->getClassInfo($token, $cid);
     }
 
 
