@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Cloud;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -26,7 +27,12 @@ class LessonController
         if ($this->request->hasFile('video'))
         {
             $file = $this->request->file('video');
-            return $file->move('video', uniqid().$file->getClientOriginalName())->getPath();
+
+            $path = $file->move('video', uniqid().$file->getClientOriginalName())->getFilename();
+
+            $cloud = new Cloud($file->getClientOriginalName(), $path);
+            return $cloud->insertDB();
+
         } else {
             return false;
         }
@@ -44,14 +50,18 @@ class LessonController
         $Chapter = $this->request->query('chapter');
         $Explain = $this->request->query('explain');
         $Link = $this->request->query('link');
-        if($Link || $this->uploadVideo())
+        if($Link)
         {
-            if ($Link)
+        }
+        else if ($Mid = $this->uploadVideo()){
+            if ($Mid)
             {
 
+                return "success";
             }
         }
-        return "video not found";
+        else
+            return "video not found";
 
 
 

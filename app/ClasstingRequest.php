@@ -35,11 +35,11 @@ class ClasstingRequest
         $output = curl_exec($curl);
         curl_close($curl);
         $decode = json_decode($output);
-        if ($decode == null){
+        if ($decode === null) {
             return null;
         }
-        return $decode;
 
+        return $decode;
     }
 
 }

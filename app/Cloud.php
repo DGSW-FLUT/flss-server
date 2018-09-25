@@ -9,6 +9,8 @@
 namespace App;
 
 
+use Illuminate\Support\Facades\DB;
+
 /**
  * Flss 파일 저장소
  * @package App
@@ -39,6 +41,26 @@ class Cloud
         $this->setLink($link);
     }
 
+    public function insertDB()
+    {
+
+        if (strpos($this->getLink(), 'http://') != false)
+            if (DB::table('Cloud')->insert(['Name' => $this->getName(), 'Link' => $this->getLink()]))
+                return get_object_vars(DB::select('select LAST_INSERT_ID()')[0])['LAST_INSERT_ID()'];
+            else
+                return false;
+        else
+            if (DB::table('Cloud')->insert(['Name' => $this->getName(), 'File' => $this->getLink()]))
+                return get_object_vars(DB::select('select LAST_INSERT_ID()')[0])['LAST_INSERT_ID()'];
+            else
+                return false;
+
+    }
+
+    public function toArray()
+    {
+        return get_object_vars($this);
+    }
 
     /**
      * @return string|null
