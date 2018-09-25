@@ -33,13 +33,12 @@ class ClasstingRequest
         ));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $output = curl_exec($curl);
-        echo $output;
         curl_close($curl);
         $decode = json_decode($output);
         if ($decode == null){
             return null;
         }
-        return get_object_vars($output);
+        return $decode;
 
     }
 

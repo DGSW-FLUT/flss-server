@@ -32,7 +32,8 @@ class ClassController
         $token = $this->request->query('token');
         $uid = $this->request->query('uid');
         $classRoom = new ClassRoom();
-        return response()->json($classRoom->getClassList($token, $uid), Response::HTTP_OK);
+//        return response()->json($classRoom->getClassList($token, $uid), Response::HTTP_OK);
+        return $classRoom->getClassList($token, $uid);
     }
 
     /*

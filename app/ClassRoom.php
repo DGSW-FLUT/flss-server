@@ -71,9 +71,10 @@ class ClassModel
      */
     public function setAllFromArray($classroom)
     {
-        if (is_object($classroom))
-            $classroom = get_object_vars($classroom);
 
+        if (is_object($classroom)) {
+            $classroom = get_object_vars($classroom);
+        }
         if (isset($classroom['id']))
             $this->id = $classroom['id'];
         else
@@ -102,7 +103,8 @@ class ClassModel
      */
     public static function getClassesFromObjectArray($classrooms)
     {
-        $classes[] = new ClassModel();
+//        $classes[] = new ClassModel();
+
         foreach ($classrooms as $classroom) {
             $c = new ClassModel();
             $c->setAllFromArray($classroom);
@@ -132,9 +134,13 @@ class ClassModel
         return false;
     }
 
-    public function expose()
+    public function toJSON()
     {
-        return json_encode(get_object_vars($this));
+        return json_encode($this->toArray());
+    }
+
+    public function toArray(){
+        return get_object_vars($this);
     }
 
     /**
@@ -252,7 +258,7 @@ class ClassRoom extends Model
             $model->setAllFromArray($data);
             $model->insertDB();
         }
-        return $model->expose();
+        return $model->toJSON();
     }
 
     /**
@@ -276,10 +282,12 @@ class ClassRoom extends Model
         $request = new ClasstingRequest($token);
         $datas = $request->Ting_Get('/v2/users/' . $userId . '/joined_classes');
         $models = ClassModel::getClassesFromObjectArray($datas);
+
         foreach ($models as $model) {
             $model->insertDB();
+            $classes[] = $model->toArray();
         }
-        return $models;
+        return (json_encode($classes, JSON_UNESCAPED_UNICODE));
 
     }
 
