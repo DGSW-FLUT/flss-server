@@ -43,11 +43,15 @@ class LessonController
         $Unit = $this->request->query('unit');
         $Chapter = $this->request->query('chapter');
         $Explain = $this->request->query('explain');
-        if($this->uploadVideo())
+        $Link = $this->request->query('link');
+        if($Link || $this->uploadVideo())
         {
-            return "asd";
+            if ($Link)
+            {
+
+            }
         }
-        return "ff";
+        return "video not found";
 
 
 
