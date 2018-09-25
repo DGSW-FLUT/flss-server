@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Cloud;
+use App\Subject;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -52,10 +53,14 @@ class LessonController
         $Link = $this->request->query('link');
         if($Link)
         {
+            $Mid = null;
         }
         else if ($Mid = $this->uploadVideo()){
             if ($Mid)
             {
+
+                $Sub = new Subject($Subject);
+                $YSid = $Sub->addYearSubjectDB($Grade, $Semester);
 
                 return "success";
             }
