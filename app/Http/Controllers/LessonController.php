@@ -15,15 +15,43 @@ class LessonController
         $this->request = $request;
     }
 
+
+    /**
+     * FormData에서부터 비디오를 받아옵니다.
+     *
+     * @return bool|string
+     */
     public function uploadVideo()
     {
         if ($this->request->hasFile('video'))
         {
             $file = $this->request->file('video');
-            $file->move('video', uniqid().$file->getClientOriginalName())->getPath();
-            return "success";
+            return $file->move('video', uniqid().$file->getClientOriginalName())->getPath();
         } else {
-            return "video not found";
+            return false;
         }
     }
+
+    public function AddLesson() {
+        // Get Body Parameter
+        $UserId = $this->request->query('uid');
+        $ClassId = $this->request->query('cid');
+        $Title = $this->request->query('title');
+        $Subject = $this->request->query('subject');
+        $Grade = $this->request->query('grade');
+        $Semester = $this->request->query('semester');
+        $Unit = $this->request->query('unit');
+        $Chapter = $this->request->query('chapter');
+        $Explain = $this->request->query('explain');
+        if($this->uploadVideo())
+        {
+            return "asd";
+        }
+        return "ff";
+
+
+
+    }
+
+
 }
