@@ -33,5 +33,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 
     });
+
+    $router->group(['prefix'=>'lesson'], function () use ($router) {
+        $router->post('upload', 'LessonController@AddLesson');
+    });
     
 });
