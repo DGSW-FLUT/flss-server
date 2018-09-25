@@ -103,7 +103,6 @@ class ClassModel
      */
     public static function getClassesFromObjectArray($classrooms)
     {
-//        $classes[] = new ClassModel();
 
         foreach ($classrooms as $classroom) {
             $c = new ClassModel();
@@ -287,6 +286,7 @@ class ClassRoom extends Model
             $model->insertDB();
             $classes[] = $model->toArray();
         }
+
         return (json_encode($classes, JSON_UNESCAPED_UNICODE));
 
     }

@@ -10,6 +10,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         });
         $router->get('classting', 'OAuthController@classting');
         $router->get('classting_handle', 'OAuthController@classtingHandle');
+        $router->get('userinfo', 'UserController@getUserInfo');
     });
 
     $router->group(['prefix'=>'class'], function () use ($router){
@@ -32,10 +33,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('info', 'ClassController@getClassInfo');
 
 
-    });
-
-    $router->group(['prefix'=>'lesson'], function () use ($router) {
-        $router->post('upload', 'LessonController@AddLesson');
     });
     
 });
