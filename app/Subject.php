@@ -14,6 +14,8 @@ class Subject
 {
     public $name;
 
+    public $YSid;
+
     public function __construct($name)
     {
         $this->name = $name;
@@ -24,7 +26,8 @@ class Subject
     }
 
     public function addYearSubjectDB($year, $semes){
-        return DB::table('YearSubject')->insertGetId(['Syear'=>$year, 'Semes'=>$semes, 'Sid'=>$this->addSubjectDB()]);
+        return $YSid = DB::table('YearSubject')->insertGetId(['Syear'=>$year, 'Semes'=>$semes, 'Sid'=>$this->addSubjectDB()]);
 
     }
+
 }

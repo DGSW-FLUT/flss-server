@@ -17,6 +17,12 @@ use Illuminate\Support\Facades\DB;
  */
 class Cloud implements iDBModel
 {
+
+    /**
+     * Cloud 테이블 pk (ai)
+     * @var int
+     */
+    protected $Mid;
     /**
      * 파일 링크 (유튜브, 로컬 파일 경로)
      * @var string
@@ -45,9 +51,9 @@ class Cloud implements iDBModel
     {
 
         if (strpos($this->getLink(), 'http://') != false)
-            return DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'Link' => $this->getLink()]);
+            return $Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'Link' => $this->getLink()]);
         else
-            return DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'File' => $this->getLink()]);
+            return $Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'File' => $this->getLink()]);
 
     }
 
@@ -55,6 +61,16 @@ class Cloud implements iDBModel
     {
         return get_object_vars($this);
     }
+
+    /**
+     * @return int
+     */
+    public function getMid(): int
+    {
+        return $this->Mid;
+    }
+
+
 
     /**
      * @return string|null
