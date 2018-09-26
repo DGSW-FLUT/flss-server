@@ -34,7 +34,28 @@ $router->group(['prefix' => 'api'], function () use ($router) {
          */
         $router->get('info', 'ClassController@getClassInfo');
 
+    });
 
+    $router->group(['prefix'=>'lesson'], function () use ($router) {
+
+        /*
+         * Lesson 추가
+         * param (uid,cid,title,subject,grade,semester,unit,chapter,explain)
+         * form data (video)
+         * */
+        $router->post('add', 'LessonController@AddLesson');
+
+        /*
+         * Lesson list 불러오기
+         * param (cid)
+         * */
+        $router->get('list', 'LessonController@getLessonList');
+
+        /*
+         * Lesson 삭제
+         * param (lno)
+         * */
+        $router->get('delete', 'LessonController@deleteClassList');
     });
     
 });
