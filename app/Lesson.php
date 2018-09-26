@@ -90,7 +90,7 @@ class Lesson implements iDBModel
         return $arrays;
     }
 
-    public function getLessonList($cid) : array{
+    public static function getLessonList($cid) : array{
         return DB::table('Lesson')->select()->where('Cid', '=', $cid)->get()->toArray();
     }
     //region GetterSetter
