@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class ClassModel
+class ClassModel implements iDBModel
 {
     /**
      * ClassRoom Identifier Number
@@ -138,7 +138,7 @@ class ClassModel
         return json_encode($this->toArray());
     }
 
-    public function toArray(){
+    public function toArray() : array{
         return get_object_vars($this);
     }
 

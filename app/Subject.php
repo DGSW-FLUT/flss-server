@@ -20,13 +20,11 @@ class Subject
     }
 
     public function addSubjectDB(){
-        DB::table('Subject')->insert(['Name'=>$this->name]);
+        return DB::table('Subject')->insertGetId(['Name'=>$this->name]);
     }
 
     public function addYearSubjectDB($year, $semes){
-        $this->addSubjectDB();
-        $Sid = get_object_vars(DB::select('select Sid from Subject where Name = ?', [$this->name])[0])['Sid'];
-        DB::table('YearSubject')->insert(['Syear'=>$year, 'Semes'=>$semes, 'Sid'=>$Sid]);
-        return get_object_vars(DB::select('select YSid from YearSubject where Syear = ? and Semes = ? and Sid = ?', [$year, $semes, $Sid])[0])['YSid'];
+        return DB::table('YearSubject')->insertGetId(['Syear'=>$year, 'Semes'=>$semes, 'Sid'=>$this->addSubjectDB()]);
+
     }
 }

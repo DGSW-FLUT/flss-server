@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\ClasstingRequest;
 
-class UserModel{
+class UserModel implements iDBModel {
     /**
      * User Identifier Number
      * 유저 ID
@@ -230,7 +230,7 @@ class UserModel{
         return json_encode($this->toArray());
     }
 
-    public function toArray(){
+    public function toArray() : array{
         return get_object_vars($this);
     }
 }
