@@ -8,7 +8,10 @@ use App\iDBModel;
 class Lesson implements iDBModel
 {
 
-
+    /**
+     * @var int Lesson no (optional)
+     */
+    protected $Lno;
 
     /**
      * @var Cloud
@@ -46,7 +49,7 @@ class Lesson implements iDBModel
     protected $Owner;
 
     /**
-     * Lesson constructor.
+     * Lesson 전부 설정.
      * @param Cloud $Video
      * @param int $cid
      * @param string $Name
@@ -55,7 +58,7 @@ class Lesson implements iDBModel
      * @param string $Unit
      * @param int $Owner
      */
-    public function __construct(Cloud $Video, int $cid, string $Name, string $Explain, Subject $Subject, string $Unit, int $Owner)
+    public function setAll(Cloud $Video, int $cid, string $Name, string $Explain, Subject $Subject, string $Unit, int $Owner)
     {
         $this->Video = $Video;
         $this->Cid = $cid;
@@ -65,6 +68,14 @@ class Lesson implements iDBModel
         $this->Unit = $Unit;
         $this->Owner = $Owner;
     }
+
+    /**
+     * @return int
+     */
+    public function deleteLessonDB(){
+        return DB::table('Lesson')->delete(['Lno'=>$this->Lno]);
+    }
+
 
 
     public function insertDB() : int
@@ -86,7 +97,26 @@ class Lesson implements iDBModel
     public static function getLessonList($cid) : array{
         return DB::table('Lesson')->select()->where('Cid', '=', $cid)->get()->toArray();
     }
+
+    /**
+     * @return int
+     */
+    public function getLno(): int
+    {
+        return $this->Lno;
+    }
+
+    /**
+     * @param int $Lno
+     */
+    public function setLno(int $Lno): void
+    {
+        $this->Lno = $Lno;
+
+    }
     //region GetterSetter
+
+
     /**
      * @return Cloud
      */

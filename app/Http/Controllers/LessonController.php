@@ -28,7 +28,7 @@ class LessonController
      *
      * @return bool|string
      */
-    public function uploadVideo()
+    public function uploadVideo($Cid)
     {
         if ($this->request->hasFile('video'))
         {
@@ -36,7 +36,7 @@ class LessonController
 
             $path = $file->move('video', uniqid().$file->getClientOriginalName())->getFilename();
 
-            $this->Cloud = new Cloud($file->getClientOriginalName(), $path);
+            $this->Cloud = new Cloud($file->getClientOriginalName(), $path, $Cid);
             return $this->Cloud->insertDB();
 
         } else {
@@ -59,9 +59,9 @@ class LessonController
         $Link = $this->request->query('link');
         if($Link)
         {
-            $this->Cloud = new Cloud($Title, $Link);
+            $this->Cloud = new Cloud($Title, $Link, $ClassId);
         }
-        else if (!$this->uploadVideo()){
+        else if (!$this->uploadVideo($ClassId)){
             return "video not found";
         }
 
@@ -69,14 +69,24 @@ class LessonController
         $Sub = new Subject($Subject);
         $Sub->addYearSubjectDB($Grade, $Semester);
 
-        $lesson = new Lesson($this->Cloud, $ClassId, $Title, $Explain, $Sub, $Unit, $UserId);
+        $lesson = new Lesson();
+        $lesson->setAll($this->Cloud, $ClassId, $Title, $Explain, $Sub, $Unit, $UserId);
         return $lesson->insertDB();
     }
 
     public function getLessonList() {
         $Cid = $this->request->query('cid');
-
         return Lesson::getLessonList($Cid);
     }
+
+    public function deleteClassList(){
+        $Lno = $this->request->query('lno');
+        $lesson = new Lesson();
+        $lesson->setLno($Lno);
+        return $lesson->deleteLessonDB();
+    }
+
+
+
 
 }

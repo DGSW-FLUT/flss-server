@@ -36,25 +36,32 @@ class Cloud implements iDBModel
      */
     protected $Name;
 
+    /**
+     * 클래스 id (파일들은 한 클래스에 귀속되어 있다)
+     * @var int
+     */
+    protected $Cid;
 
     /**
      * Cloud constructor.
      * @param string $Name
      * @param string $link
+     * @param int $Cid
      */
-    public function __construct(string $Name = null, string $link = null)
+    public function __construct(string $Name = null, string $link = null, int $Cid = null)
     {
         $this->setName($Name);
         $this->setLink($link);
+        $this->setCid($Cid);
     }
 
     public function insertDB()
     {
 
         if (strpos($this->getLink(), 'http://') != false)
-            return $Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'Link' => $this->getLink()]);
+            return $Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'Link' => $this->getLink(), 'Cid' => $this->getCid()]);
         else
-            return $Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'File' => $this->getLink()]);
+            return $Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'File' => $this->getLink(), 'Cid' => $this->getCid()]);
 
     }
 
@@ -71,6 +78,22 @@ class Cloud implements iDBModel
         return $this->Mid;
     }
 
+
+    /**
+     * @return int
+     */
+    public function getCid(): int
+    {
+        return $this->Cid;
+    }
+
+    /**
+     * @param int $Cid
+     */
+    public function setCid(int $Cid): void
+    {
+        $this->Cid = $Cid;
+    }
 
 
     /**
