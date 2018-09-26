@@ -23,9 +23,9 @@ class Lesson implements iDBModel
     protected $Video;
 
     /**
-     * @var ClassModel
+     * @var int
      */
-    protected $Class;
+    protected $Cid;
 
     /**
      * @var string
@@ -48,14 +48,31 @@ class Lesson implements iDBModel
     protected $Unit;
 
     /**
-     * @var UserModel
+     * @var int
      */
     protected $Owner;
 
-    public function __construct()
+    /**
+     * Lesson constructor.
+     * @param Cloud $Video
+     * @param int $cid
+     * @param string $Name
+     * @param string $Explain
+     * @param Subject $Subject
+     * @param string $Unit
+     * @param int $Owner
+     */
+    public function __construct(Cloud $Video, int $cid, string $Name, string $Explain, Subject $Subject, string $Unit, int $Owner)
     {
-    
+        $this->Video = $Video;
+        $this->Cid = $cid;
+        $this->Name = $Name;
+        $this->Explain = $Explain;
+        $this->Subject = $Subject;
+        $this->Unit = $Unit;
+        $this->Owner = $Owner;
     }
+
 
     public function insertDB() : int
     {
@@ -64,9 +81,18 @@ class Lesson implements iDBModel
 
     public function toArray(): array
     {
-        return get_object_vars($this);
+        $arrays = get_object_vars($this);
+        $arrays['Vid'] = $this->Video->getMid();
+        $arrays['YSid'] = $this->Subject->YSid;
+        unset($arrays['Video']);
+        unset($arrays['Subject']);
+
+        return $arrays;
     }
 
+    public function getLessonList($cid) : array{
+        return DB::table('Lesson')->select()->where('Cid', '=', $cid)->get()->toArray();
+    }
     //region GetterSetter
     /**
      * @return Cloud
@@ -85,19 +111,19 @@ class Lesson implements iDBModel
     }
 
     /**
-     * @return ClassModel
+     * @return int
      */
-    public function getClass(): ClassModel
+    public function getCid(): int
     {
-        return $this->Class;
+        return $this->Cid;
     }
 
     /**
-     * @param ClassModel $Class
+     * @param int $Cid
      */
-    public function setClass(ClassModel $Class): void
+    public function setCid(int $Cid): void
     {
-        $this->Class = $Class;
+        $this->Cid = $Cid;
     }
 
     /**
@@ -165,17 +191,17 @@ class Lesson implements iDBModel
     }
 
     /**
-     * @return UserModel
+     * @return int
      */
-    public function getOwner(): UserModel
+    public function getOwner(): int
     {
         return $this->Owner;
     }
 
     /**
-     * @param UserModel $Owner
+     * @param int $Owner
      */
-    public function setOwner(UserModel $Owner): void
+    public function setOwner(int $Owner): void
     {
         $this->Owner = $Owner;
     }
