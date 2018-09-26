@@ -10,6 +10,7 @@ namespace App;
 
 
 use Illuminate\Support\Facades\DB;
+use App\iDBModel;
 
 /**
  * Flss 파일 저장소

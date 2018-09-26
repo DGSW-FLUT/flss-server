@@ -1,7 +1,9 @@
 <?php
 
-namespace app;
+namespace App;
+
 use Illuminate\Support\Facades\DB;
+use App\iDBModel;
 
 /**
  * Created by PhpStorm.

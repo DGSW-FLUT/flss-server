@@ -5,6 +5,7 @@ namespace app;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\ClasstingRequest;
+use App\iDBModel;
 
 class UserModel implements iDBModel {
     /**

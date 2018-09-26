@@ -1,16 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tbvja
- * Date: 2018-09-26
- * Time: 오후 1:14
- */
-
 
 namespace App;
 
-
 use Illuminate\Support\Facades\DB;
+use App\iDBModel;
 
 class Lesson implements iDBModel
 {
