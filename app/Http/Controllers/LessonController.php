@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Cloud;
+use App\Lesson;
+use App\Subject;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -11,6 +13,10 @@ class LessonController
 {
     private $request = null;
 
+    /**
+     * @var Cloud
+     */
+    private $Cloud = null;
     public function __construct(Request $request)
     {
         $this->request = $request;
@@ -30,13 +36,15 @@ class LessonController
 
             $path = $file->move('video', uniqid().$file->getClientOriginalName())->getFilename();
 
-            $cloud = new Cloud($file->getClientOriginalName(), $path);
-            return $cloud->insertDB();
+            $this->Cloud = new Cloud($file->getClientOriginalName(), $path);
+            return $this->Cloud->insertDB();
 
         } else {
             return false;
         }
     }
+
+
 
     public function AddLesson() {
         // Get Body Parameter
@@ -47,25 +55,28 @@ class LessonController
         $Grade = $this->request->query('grade');
         $Semester = $this->request->query('semester');
         $Unit = $this->request->query('unit');
-        $Chapter = $this->request->query('chapter');
         $Explain = $this->request->query('explain');
         $Link = $this->request->query('link');
         if($Link)
         {
+            $this->Cloud = new Cloud($Title, $Link);
         }
-        else if ($Mid = $this->uploadVideo()){
-            if ($Mid)
-            {
-
-                return "success";
-            }
-        }
-        else
+        else if (!$this->uploadVideo()){
             return "video not found";
+        }
 
 
+        $Sub = new Subject($Subject);
+        $Sub->addYearSubjectDB($Grade, $Semester);
 
+        $lesson = new Lesson($this->Cloud, $ClassId, $Title, $Explain, $Sub, $Unit, $UserId);
+        return $lesson->insertDB();
     }
 
+    public function getLessonList() {
+        $Cid = $this->request->query('cid');
+
+        return Lesson::getLessonList($Cid);
+    }
 
 }

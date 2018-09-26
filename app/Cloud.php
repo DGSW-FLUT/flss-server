@@ -15,8 +15,14 @@ use Illuminate\Support\Facades\DB;
  * Flss 파일 저장소
  * @package App
  */
-class Cloud
+class Cloud implements iDBModel
 {
+
+    /**
+     * Cloud 테이블 pk (ai)
+     * @var int
+     */
+    protected $Mid;
     /**
      * 파일 링크 (유튜브, 로컬 파일 경로)
      * @var string
@@ -45,22 +51,26 @@ class Cloud
     {
 
         if (strpos($this->getLink(), 'http://') != false)
-            if (DB::table('Cloud')->insert(['Name' => $this->getName(), 'Link' => $this->getLink()]))
-                return get_object_vars(DB::select('select LAST_INSERT_ID()')[0])['LAST_INSERT_ID()'];
-            else
-                return false;
+            return $Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'Link' => $this->getLink()]);
         else
-            if (DB::table('Cloud')->insert(['Name' => $this->getName(), 'File' => $this->getLink()]))
-                return get_object_vars(DB::select('select LAST_INSERT_ID()')[0])['LAST_INSERT_ID()'];
-            else
-                return false;
+            return $Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'File' => $this->getLink()]);
 
     }
 
-    public function toArray()
+    public function toArray() : array
     {
         return get_object_vars($this);
     }
+
+    /**
+     * @return int
+     */
+    public function getMid(): int
+    {
+        return $this->Mid;
+    }
+
+
 
     /**
      * @return string|null
