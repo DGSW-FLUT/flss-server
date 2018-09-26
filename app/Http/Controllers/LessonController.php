@@ -58,10 +58,6 @@ class LessonController
         else if ($Mid = $this->uploadVideo()){
             if ($Mid)
             {
-
-                $Sub = new Subject($Subject);
-                $YSid = $Sub->addYearSubjectDB($Grade, $Semester);
-
                 return "success";
             }
         }
