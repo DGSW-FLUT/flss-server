@@ -57,11 +57,11 @@ class Cloud implements iDBModel
 
     public function insertDB()
     {
-
-        if (strpos($this->getLink(), 'http://') != false)
-            return $Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'Link' => $this->getLink(), 'Cid' => $this->getCid()]);
+        echo $this->getLink();
+        if (strpos($this->getLink(), '://') != false )
+            return $this->Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'Link' => $this->getLink(), 'Cid' => $this->getCid()]);
         else
-            return $Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'File' => $this->getLink(), 'Cid' => $this->getCid()]);
+            return $this->Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'File' => $this->getLink(), 'Cid' => $this->getCid()]);
 
     }
 

@@ -14,7 +14,7 @@
             formData.append("video", $("#video")[0].files[0]);
 
             $.ajax({
-                url: '/api/lesson/upload',
+                url: '/api/lesson/add',
                 processData: false,
                 contentType: false,
                 data: formData,
@@ -29,8 +29,30 @@
 <body>
 
 <!--ajax 로 테스트 할때는 action 속성 지워주세요-->
-<form id="FILE_FORM" method="post" enctype="multipart/form-data" action="/api/lesson/upload">
+<form id="FILE_FORM" method="post" enctype="multipart/form-data" action="/api/lesson/add">
     <input type="file" id="video" name="video">
+    <!--
+
+        $UserId = $this->request->query('uid');
+        $ClassId = $this->request->query('cid');
+        $Title = $this->request->query('title');
+        $Subject = $this->request->query('subject');
+        $Grade = $this->request->query('grade');
+        $Semester = $this->request->query('semester');
+        $Unit = $this->request->query('unit');
+        $Explain = $this->request->query('explain');
+        $Link = $this->request->query('link');
+        -->
+    uid : <input type="text" name="uid"> <br>
+    cid : <input type="text" name="cid"> <br>
+    title : <input type="text" name="title"> <br>
+    subject : <input type="text" name="subject"> <br>
+    grade : <input type="text" name="grade"> <br>
+    semester : <input type="text" name="semester"> <br>
+    unit : <input type="text" name="unit"> <br>
+    explain : <input type="text" name="explain"> <br>
+    link : <input type="text" name="link"> <br>
+
     <!--ajax Version-->
     <!--<a class="ui-shadow ui-btn ui-corner-all" href="javascript:uploadFile();">전송</a>-->
 
