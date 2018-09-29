@@ -8,6 +8,7 @@ use App\ClasstingRequest;
 use App\iDBModel;
 
 class UserModel implements iDBModel {
+
     /**
      * User Identifier Number
      * 유저 ID
@@ -213,25 +214,27 @@ class UserModel implements iDBModel {
     {
         $count = DB::table('User')
             ->where('Cid', '=', $this->getId())
-            ->count();
-        if ($count == 0) {
-            return DB::table('User')->insert([
+            ->get(['Uid'])[0];
+        if (!$count) {
+            return $this->id = DB::table('User')->insertGetId([
                 'Cid' => $this->getId(),
                 'Name' => $this->getName(),
                 'Email' => $this->getEmail(),
                 'Profile' => $this->getProfileImage(),
                 'Role' => $this->getRole()
             ]);
+        } else {
+          $this->id = $count->Uid;
         }
         return false;
     }
 
     public function toJSON()
     {
-        return json_encode($this->toArray());
+        return json_encode($this->toArray(), JSON_UNESCAPED_UNICODE);
     }
 
-    public function toArray() : array{
+    public function toArray() : array {
         return get_object_vars($this);
     }
 }
@@ -244,9 +247,6 @@ class UserInfo extends Model{
         $models = UserModel::getUserFromObjectArray($datas);
 
         $models->insertDB();
-
-        return (json_encode($datas, JSON_UNESCAPED_UNICODE));
+        return $models->toArray();
     }
 }
-
-?>
