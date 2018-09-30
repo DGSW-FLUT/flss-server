@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\DB;
 use App\ClasstingRequest;
 use App\iDBModel;
 
-class UserModel implements iDBModel {
+class UserModel implements iDBModel
+{
 
     /**
      * User Identifier Number
@@ -46,6 +47,7 @@ class UserModel implements iDBModel {
      * @var string
      */
     protected $email;
+
     /**
      * userModel setAll.
      * @param string $id
@@ -224,7 +226,7 @@ class UserModel implements iDBModel {
                 'Role' => $this->getRole()
             ]);
         } else {
-          $this->id = $count->Uid;
+            $this->id = $count->Uid;
         }
         return false;
     }
@@ -234,16 +236,20 @@ class UserModel implements iDBModel {
         return json_encode($this->toArray(), JSON_UNESCAPED_UNICODE);
     }
 
-    public function toArray() : array {
-        return get_object_vars($this);
+    public function toArray(): array
+    {
+        return [id => $this->id, name => $this->name, email => $this->email, profile_image => $this->profile_image, role => $this->role];
     }
 }
 
-class UserInfo extends Model{
+class UserInfo extends Model
+{
     public function getUser($token)
     {
         $request = new ClasstingRequest($token);
         $datas = $request->Ting_Get('/v2/users/me');
+        if (!$datas)
+            return "Invalid Token";
         $models = UserModel::getUserFromObjectArray($datas);
 
         $models->insertDB();

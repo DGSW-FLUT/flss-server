@@ -95,7 +95,17 @@ class Lesson implements iDBModel
     }
 
     public static function getLessonList($cid) : array{
-        return DB::table('Lesson')->select()->where('Cid', '=', $cid)->get()->toArray();
+        return DB::table('Lesson')
+            ->select('Lno', 'Vid', 'Lesson.Cid', 'Lesson.Name as LessonName',
+                'Explain', 'Syear', 'Semes', 'Subject.Name as SubjectName',
+                'Unit', 'Owner as OwnerId', 'File', 'Link', 'AddTime')
+            ->join('Cloud', 'Vid', "=", 'Mid')
+            ->join('YearSubject', 'YearSubject.YSid', '=', 'Lesson.YSid')
+            ->join('Subject', 'Subject.Sid', '=', 'YearSubject.Sid')
+//            ->join('User', 'User.Uid', '=', 'Lesson.Owner')
+            ->where('Lesson.Cid', '=', $cid)
+            ->get('*')
+            ->toArray();
     }
 
     /**
