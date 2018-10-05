@@ -49,18 +49,19 @@ class LessonController
 
     public function AddLesson() {
         // Get Body Parameter
-        $UserId = $this->request->query('uid');
-        $ClassId = $this->request->query('cid');
-        $Title = $this->request->query('title');
-        $Subject = $this->request->query('subject');
-        $Grade = $this->request->query('grade');
-        $Semester = $this->request->query('semester');
-        $Unit = $this->request->query('unit');
-        $Explain = $this->request->query('explain');
-        $Link = $this->request->query('link');
+        $UserId = $this->request->input('uid');
+        $ClassId = $this->request->input('cid');
+        $Title = $this->request->input('title');
+        $Subject = $this->request->input('subject');
+        $Grade = $this->request->input('grade');
+        $Semester = $this->request->input('semester');
+        $Unit = $this->request->input('unit');
+        $Explain = $this->request->input('explain');
+        $Link = $this->request->input('link');
         if($Link)
         {
             $this->Cloud = new Cloud($Title, $Link, $ClassId);
+            $this->Cloud->insertDB();
         }
         else if (!$this->uploadVideo($ClassId)){
             return "video not found";

@@ -8,6 +8,8 @@ use App\iDBModel;
 
 class ClassModel implements iDBModel
 {
+
+
     /**
      * ClassRoom Identifier Number
      * 클래스 ID
@@ -55,9 +57,8 @@ class ClassModel implements iDBModel
 
     public function setFromDB($id)
     {
-        $data = DB::table("Class")->select()->where('CTid', '=', $id)->get()->toArray();
+        $data = DB::table("Class")->select()->where('CTid', '=', $id)->orWhere('Cid', '=', $id)->get()->toArray();
 
-        print_r($data);
         if ($data && $data[0]) {
             $this->setAllFromArray($data[0]);
 
@@ -120,19 +121,22 @@ class ClassModel implements iDBModel
      */
     public function insertDB()
     {
-        $count = DB::table('Class')
+        $cid = DB::table('Class')
             ->where('CTid', '=', $this->getId())
-            ->count();
-        if ($count == 0) {
-            return DB::table('Class')->insert([
+            ->get(['Cid'])[0];
+        if (!$cid) {
+            return $this->id = DB::table('Class')->insertGetId([
                 'CTid' => $this->getId(),
                 'Name' => $this->getName(),
                 'URL' => $this->getUrl(),
                 'Profile' => $this->getProfileImage()
             ]);
+        } else {
+            $this->id = $cid->Cid;
         }
         return false;
     }
+
 
     public function toJSON()
     {
@@ -258,7 +262,7 @@ class ClassRoom extends Model
             $model->setAllFromArray($data);
             $model->insertDB();
         }
-        return $model->toJSON();
+        return $model->toArray();
     }
 
     /**
@@ -281,6 +285,8 @@ class ClassRoom extends Model
     {
         $request = new ClasstingRequest($token);
         $datas = $request->Ting_Get('/v2/users/' . $userId . '/joined_classes');
+        if ($datas == null)
+            return null;
         $models = ClassModel::getClassesFromObjectArray($datas);
 
         foreach ($models as $model) {
@@ -288,7 +294,7 @@ class ClassRoom extends Model
             $classes[] = $model->toArray();
         }
 
-        return (json_encode($classes, JSON_UNESCAPED_UNICODE));
+        return $classes;
 
     }
 
