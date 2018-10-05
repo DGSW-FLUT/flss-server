@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Cloud;
 use App\Lesson;
 use App\Subject;
+use App\Quiz;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -86,7 +87,16 @@ class LessonController
         return $lesson->deleteLessonDB();
     }
 
+    public function addQuiz(){
+        $Lno = $this->request->input('lno');
+        $question = $this->request->input('question');
+        $item = $this->request->input('item.*');
+        $ranswer = $this->request->input('ranswer');
 
-
-
+        $quiz = new Quiz();
+        $quiz->setWithoutItem($Lno, $question,$ranswer);
+        $qid = $quiz->addQuiz();
+        $quiz->setItems($item);
+        return $quiz->addQuizItem($qid);
+    }
 }

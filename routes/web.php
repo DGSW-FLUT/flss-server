@@ -56,6 +56,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
          * param (lno)
          * */
         $router->get('delete', 'LessonController@deleteClassList');
+
+        $router->post('addQuiz', 'LessonController@addQuiz');
+
+
+
     });
     
 });
