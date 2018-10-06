@@ -62,5 +62,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 
     });
-    
+
+    $router->group(['prefix'=>'data'], function () use ($router){
+        $router->get('getData', 'DataController@getDataList');
+        $router->post('addData', 'DataController@addData');
+    });
 });
