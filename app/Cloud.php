@@ -65,10 +65,13 @@ class Cloud implements iDBModel
 
     }
 
-    public static function getAllList($cid){
-        return DB::table('Cloud')->select()->where('Cid','=',$cid)->get();
+    public function getAllList($cid,$readOnly){
+        return DB::table('Cloud')->select()->where('Cid','=',$cid)->where('ReadOnly','=',$readOnly)->get();
     }
 
+    public function getDataByTitle($cid,$title,$readOnly){
+        return DB::table('Cloud')->select()->where('Cid','=',$cid)->where('ReadOnly','=',$readOnly)->where('Name','=','%'.$title."%")->get();
+    }
     public function toArray() : array
     {
         return get_object_vars($this);

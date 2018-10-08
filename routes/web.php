@@ -69,8 +69,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     });
 
     $router->group(['prefix'=>'data'], function () use ($router){
-        $router->get('getData', 'DataController@getDataList');
-        $router->post('addData', 'DataController@addData');
+        $router->get('getPost', 'DataController@getPostList');
+        $router->post('addPost', 'DataController@addPost');
+        $router->get('getPostByName', 'DataController@getPostByName');
+        $router->get('getPostByTitle', 'DataController@getPostByTitle');
+        $router->get('getPostList', 'DataController@getPostList');
+        $router->get('getDataList', 'DataController@getDataList');
+        $router->get('getDataByTitle', 'DataController@getDataByTitle');
     });
 
     $router->group(['prefix'=>'reward'], function () use ($router){
