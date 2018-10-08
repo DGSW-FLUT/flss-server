@@ -93,11 +93,28 @@ class LessonController
         $question = $this->request->input('question');
         $item = $this->request->input('item.*');
         $ranswer = $this->request->input('ranswer');
+        $type = $this->request->input('type');
 
         $quiz = new Quiz();
-        $quiz->setWithoutItem($Lno, $question,$ranswer);
+        $quiz->setWithoutItem($Lno, $question,$ranswer,$type);
         $qid = $quiz->addQuiz();
         $quiz->setItems($item);
         return $quiz->addQuizItem($qid);
+    }
+
+    public function showQuiz(){
+        $lno = $this->request->query('lno');
+
+        $quiz = new Quiz();
+        return $quiz->showQuiz($lno);
+    }
+
+    public function solveQuiz(){
+        $qid = $this->request->input('qid');
+        $answer = $this->request->input('answer');
+        $uid = $this->request->input('uid');
+
+        $quiz = new Quiz();
+        return $quiz->solveQuiz($qid,$answer,$uid);
     }
 }
