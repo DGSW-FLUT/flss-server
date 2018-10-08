@@ -2,8 +2,12 @@
 
 
 /** @var \Laravel\Lumen\Routing\Router $router */
-$router->get('/', 'TestController');
-$router->post('/', 'TestController');
+$router->get('/', function () use ($router) {
+    return response()->make(include'main.html', 200);
+});
+$router->post('/', function () use ($router) {
+    return response()->setContent("sdfsd")->send();
+});
 
 $router->group(['prefix' => 'api'], function () use ($router) {
     $router->group(['prefix' => 'auth'], function () use ($router) {
