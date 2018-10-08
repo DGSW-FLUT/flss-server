@@ -9,6 +9,7 @@
 namespace App;
 
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class Quiz
 {
@@ -20,6 +21,7 @@ class Quiz
 
     protected $items;
 
+    protected $type;
     /**
      * @return mixed
      */
@@ -84,16 +86,17 @@ class Quiz
         $this->items = $items;
     }
 
-    public function setWithoutItem($Lno, $question, $ranswer)
+    public function setWithoutItem($Lno, $question, $ranswer,$type)
     {
         $this->Lno = $Lno;
         $this->question = $question;
         $this->ranswer = $ranswer;
+        $this->type = $type;
     }
 
     public function addQuiz()
     {
-        return $qid = DB::table('QuizInfo')->insertGetId(['Lno'=>$this->Lno, 'Title'=>$this->question, 'Ranswer'=>$this->ranswer]);
+        return $qid = DB::table('QuizInfo')->insertGetId(['Lno'=>$this->Lno, 'Title'=>$this->question, 'Ranswer'=>$this->ranswer, 'Type'=>$this->type]);
     }
 
     public function addQuizItem($qid)

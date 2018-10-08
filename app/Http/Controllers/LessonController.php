@@ -93,9 +93,10 @@ class LessonController
         $question = $this->request->input('question');
         $item = $this->request->input('item.*');
         $ranswer = $this->request->input('ranswer');
+        $type = $this->request->input('type');
 
         $quiz = new Quiz();
-        $quiz->setWithoutItem($Lno, $question,$ranswer);
+        $quiz->setWithoutItem($Lno, $question,$ranswer,$type);
         $qid = $quiz->addQuiz();
         $quiz->setItems($item);
         return $quiz->addQuizItem($qid);
