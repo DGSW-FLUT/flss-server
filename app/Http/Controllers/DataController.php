@@ -35,7 +35,7 @@ class DataController
         return $path;
     }
 
-    public function getDataList(){
+    public function getPostList(){
         $cid = $this->request->query('cid');
         $readOnly = $this->request->query('role');
 
@@ -43,7 +43,23 @@ class DataController
         return $post->getAllList($cid,$readOnly);
     }
 
-    public function getDataByName(){
+    public function getDataList(){
+        $cid = $this->request->query('cid');
+        $readOnly = $this->request->query('readOnly');
+
+        $data = new Cloud();
+        return $data->getAllList($cid,$readOnly);
+    }
+
+    public function getDataByTitle(){
+        $cid = $this->request->query('cid');
+        $readOnly = $this->request->query('readOnly');
+        $title = $this->request->query('title');
+
+        $data = new Cloud();
+        return $data->getDataByTitle($cid,$title,$readOnly);
+    }
+    public function getPostByName(){
         $name = $this->request->query('name');
         $cid = $this->request->query('cid');
 
@@ -51,7 +67,7 @@ class DataController
         return $post->getDataByName($cid,$name);
     }
 
-    public function getDataByTitle(){
+    public function getPostByTitle(){
         $title = $this->request->query('title');
         $cid = $this->request->query('cid');
 
@@ -59,7 +75,7 @@ class DataController
         return $post->getDataByTitle($cid,$title);
     }
 
-    public function addData(){
+    public function addPost(){
         $cid = $this->request->input('cid');
         $name = $this->request->input('name');
 
