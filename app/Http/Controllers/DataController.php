@@ -26,7 +26,7 @@ class DataController
         $this->request = $request;
     }
 
-    public function uploadData($Cid)
+    public function uploadData()
     {
         $file = $this->request->file('video');
 
@@ -50,7 +50,7 @@ class DataController
         $post = new Post();
         return $post->getDataByName($cid,$name);
     }
-    
+
     public function addData(){
         $cid = $this->request->input('cid');
         $name = $this->request->input('name');

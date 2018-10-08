@@ -71,6 +71,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->group(['prefix'=>'data'], function () use ($router){
         $router->get('getData', 'DataController@getDataList');
         $router->post('addData', 'DataController@addData');
+        $router->get('getDataByName', 'DataController@getDataByName');
     });
 
     $router->group(['prefix'=>'reward'], function () use ($router){
