@@ -61,7 +61,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->get('showQuiz', 'LessonController@showQuiz');
 
-
+        $router->post('solveQuiz', 'LessonController@solveQuiz');
     });
 
     $router->group(['prefix'=>'data'], function () use ($router){
