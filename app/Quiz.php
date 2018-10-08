@@ -107,4 +107,9 @@ class Quiz
         }
         return "Success";
     }
+
+    public function showQuiz($lno){
+        $qid = DB::table('QuizInfo')->where('Lno', '=', $lno)->pluck('Qid');
+        return DB::table('QuizChoice')->select()->where('Qid', '=', $qid)->get();
+    }
 }

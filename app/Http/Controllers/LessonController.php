@@ -100,4 +100,11 @@ class LessonController
         $quiz->setItems($item);
         return $quiz->addQuizItem($qid);
     }
+
+    public function showQuiz(){
+        $lno = $this->request->query('lno');
+
+        $quiz = new Quiz();
+        return $quiz->showQuiz($lno);
+    }
 }
