@@ -116,9 +116,13 @@ class Quiz
 
     }
 
-    public function showQuiz($lno){
-        $qid = DB::table('QuizInfo')->where('Lno', '=', $lno)->pluck('Qid');
-        return DB::table('QuizChoice')->select()->where('Qid', '=', $qid)->get();
+    public function showQuiz($lno,$type){
+        try {
+            $qid = DB::table('QuizInfo')->where('Lno', '=', $lno)->where('Type', '=', $type)->pluck('Qid');
+            return DB::table('QuizChoice')->select()->where('Qid', '=', $qid)->get();
+        } catch(Exception $e) {
+            return 0;
+        }
     }
 
     public function solveQuiz($qid,$answer,$uid){
