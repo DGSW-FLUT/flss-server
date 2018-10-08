@@ -98,14 +98,19 @@ class Quiz
 
     public function addQuizItem($qid)
     {
-        for ($i = 0; $i < count($this->items); $i++){
-            DB::table('QuizChoice')->insert([
-                'Qid' => $qid,
-                'Cno' => $i + 1,
-                'Content' => $this->items[$i]
-            ]);
+        try {
+            for ($i = 0; $i < count($this->items); $i++) {
+                DB::table('QuizChoice')->insert([
+                    'Qid' => $qid,
+                    'Cno' => $i + 1,
+                    'Content' => $this->items[$i]
+                ]);
+            }
+            return 1;
+        } catch(Exception $e){
+            return 0;
         }
-        return "Success";
+
     }
 
     public function showQuiz($lno){
@@ -121,7 +126,7 @@ class Quiz
         ]);
 
         $ranswer = DB::table('QuizInfo')->where('Qid', '=', $qid)->pluck('Ranswer');
-        
+
         if($ranswer[0] == $answer){
             return 1;
         } else {
