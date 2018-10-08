@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Cloud;
+use App\Post;
 
 class DataController
 {
@@ -36,9 +37,20 @@ class DataController
 
     public function getDataList(){
         $cid = $this->request->query('cid');
-        return Cloud::getAllList($cid);
+        $readOnly = $this->request->query('role');
+
+        $post = new Post();
+        return $post->getAllList($cid,$readOnly);
     }
 
+    public function getDataByName(){
+        $name = $this->request->query('name');
+        $cid = $this->request->query('cid');
+
+        $post = new Post();
+        return $post->getDataByName($cid,$name);
+    }
+    
     public function addData(){
         $cid = $this->request->input('cid');
         $name = $this->request->input('name');
@@ -51,6 +63,15 @@ class DataController
             $this->Cloud =  new Cloud($name,$link,$cid);
         }
 
-        return $this->Cloud->insertDB();
+        $mid = $this->Cloud->insertDB();
+
+        $title = $this->request->input('title');
+        $uid = $this->request->input('uid');
+        $content = $this->request->input('content');
+        $readOnly = $this->request->input('readOnly');
+
+        $post = new Post();
+        $post->setAll($title,$uid,$mid,$cid,$content,$readOnly);
+        return $post->insertDB();
     }
 }
