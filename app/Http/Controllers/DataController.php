@@ -51,12 +51,20 @@ class DataController
         return $post->getDataByName($cid,$name);
     }
 
+    public function getDataByTitle(){
+        $title = $this->request->query('title');
+        $cid = $this->request->query('cid');
+
+        $post = new Post();
+        return $post->getDataByTitle($cid,$title);
+    }
+
     public function addData(){
         $cid = $this->request->input('cid');
         $name = $this->request->input('name');
 
         if($this->request->hasFile('video')){
-            $path = $this->uploadData('Cid');
+            $path = $this->uploadData();
             $this->Cloud =  new Cloud($name,$path,$cid);
         } else {
             $link = $this->request->input('link');

@@ -57,4 +57,8 @@ class Post
 
         return DB::table('Post')->select()->where('Uid', '=', $uid)->where('Cid', '=', $cid)->get();
     }
+
+    public function getDataByTitle($cid, $title){
+        return DB::table('Post')->select()->where('Title','=', "%".$title."%")->where('Cid', '=', $cid)->get();
+    }
 }
