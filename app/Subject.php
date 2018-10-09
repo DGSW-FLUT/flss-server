@@ -26,10 +26,9 @@ class Subject
     public function addSubjectDB(){
         $id = DB::table('Subject')
             ->where('Name', $this->name)
-            ->get(['Sid'])[0]->Sid;
-
-        if ($id)
-            return $id;
+            ->get(['Sid'])->toArray();
+        if (count($id) > 0)
+            return get_object_vars($id[0])['Sid'];
         return DB::table('Subject')->insertGetId(['Name'=>$this->name]);
     }
 
@@ -39,9 +38,11 @@ class Subject
         ->where('SYear', $year)
         ->where('Semes', $semes)
         ->where('Sid', $this->addSubjectDB())
-        ->get(['YSid'])[0]->YSid;
-        if (!$this->YSid)
-            return $YSid = DB::table('YearSubject')->insertGetId(['Syear'=>$year, 'Semes'=>$semes, 'Sid'=>$this->addSubjectDB()]);
+        ->get(['YSid'])->toArray();
+        if (count($this->YSid) == 0)
+            return $this->YSid = DB::table('YearSubject')->insertGetId(['Syear'=>$year, 'Semes'=>$semes, 'Sid'=>$this->addSubjectDB()]);
+        else
+            return $this->YSid = get_object_vars($this->YSid[0])['YSid'];
     }
 
 }
