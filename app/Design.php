@@ -18,11 +18,19 @@ class Design
             'Title' => $title
         ]);
     }
-    
+
     public function addFile($did,$mid){
         return DB::table('ClassAttach')->insert([
             'Did' => $did,
             'Mid' => $mid
         ]);
+    }
+
+    public function designList($cid){
+        return DB::table('Design')->select()->where('Cid','=',$cid)->get();
+    }
+
+    public function oneDesign($did){
+        return DB::table('ClassAttach')->select()->where('Did','=',$did)->get();
     }
 }

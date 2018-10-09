@@ -59,4 +59,18 @@ class DesignController
         $design = new Design();
         return $design->addFile($did,$mid);
     }
+
+    public function showList(){
+        $cid = $this->request->query('cid');
+
+        $design = new Design();
+        return $design->designList($cid);
+    }
+
+    public function showOne(){
+        $did = $this->request->query('did');
+
+        $design = new Design();
+        return $design->oneDesign($did);
+    }
 }
