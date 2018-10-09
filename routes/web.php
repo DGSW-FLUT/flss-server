@@ -82,4 +82,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('getUser', 'RewardController@getStudent');
         $router->get('addPoint', 'RewardController@addPoint');
     });
+
+    $router->group(['prefix'=>'design'], function () use ($router){
+        $router->post('addDesign', 'DesignController@addDesign');
+        $router->post('addFile', 'DesignController@addFile');
+        $router->get('designList', 'DesignController@showList');
+        $router->get('oneDesign', 'DesignController@showOne');
+    });
 });

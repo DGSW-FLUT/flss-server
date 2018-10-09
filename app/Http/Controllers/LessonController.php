@@ -37,7 +37,7 @@ class LessonController
 
             $path = $file->move('video', uniqid().$file->getClientOriginalName())->getFilename();
 
-            $this->Cloud = new Cloud($file->getClientOriginalName(), $path, $Cid);
+            $this->Cloud = new Cloud($file->getClientOriginalName(), $path, $Cid, 'student');
             return $this->Cloud->insertDB();
 
         } else {
@@ -60,7 +60,7 @@ class LessonController
         $Link = $this->request->input('link');
         if($Link)
         {
-            $this->Cloud = new Cloud($Title, $Link, $ClassId);
+            $this->Cloud = new Cloud($Title, $Link, $ClassId, 'student');
             $this->Cloud->insertDB();
         }
         else if (!$this->uploadVideo($ClassId)){

@@ -48,28 +48,30 @@ class Cloud implements iDBModel
      * @param string $link
      * @param int $Cid
      */
-    public function __construct(string $Name = null, string $link = null, int $Cid = null)
+
+    protected $ReadOnly;
+    public function __construct($Name, $link, $Cid, $ReadOnly)
     {
         $this->setName($Name);
         $this->setLink($link);
         $this->setCid($Cid);
+        $this->ReadOnly = $ReadOnly;
     }
 
     public function insertDB()
     {
-        echo $this->getLink();
         if (strpos($this->getLink(), '://') != false )
-            return $this->Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'Link' => $this->getLink(), 'Cid' => $this->getCid()]);
+            return $this->Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'Link' => $this->getLink(), 'Cid' => $this->getCid(), 'ReadOnly' => $this->ReadOnly]);
         else
-            return $this->Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'File' => $this->getLink(), 'Cid' => $this->getCid()]);
+            return $this->Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'File' => $this->getLink(), 'Cid' => $this->getCid(), 'ReadOnly' => $this->ReadOnly]);
 
     }
 
-    public function getAllList($cid,$readOnly){
+    public static function getAllList($cid,$readOnly){
         return DB::table('Cloud')->select()->where('Cid','=',$cid)->where('ReadOnly','=',$readOnly)->get();
     }
 
-    public function getDataByTitle($cid,$title,$readOnly){
+    public static function getDataByTitle($cid,$title,$readOnly){
         return DB::table('Cloud')->select()->where('Cid','=',$cid)->where('ReadOnly','=',$readOnly)->where('Name','=','%'.$title."%")->get();
     }
     public function toArray() : array
