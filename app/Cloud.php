@@ -48,27 +48,38 @@ class Cloud implements iDBModel
      * @param string $link
      * @param int $Cid
      */
-    public function __construct(string $Name = null, string $link = null, int $Cid = null)
+
+    protected $ReadOnly;
+    public function __construct($Name, $link, $Cid, $ReadOnly)
     {
         $this->setName($Name);
         $this->setLink($link);
         $this->setCid($Cid);
+        $this->ReadOnly = $ReadOnly;
     }
 
     public function insertDB()
     {
-        echo $this->getLink();
         if (strpos($this->getLink(), '://') != false )
-            return $this->Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'Link' => $this->getLink(), 'Cid' => $this->getCid()]);
+            return $this->Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'Link' => $this->getLink(), 'Cid' => $this->getCid(), 'ReadOnly' => $this->ReadOnly]);
         else
-            return $this->Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'File' => $this->getLink(), 'Cid' => $this->getCid()]);
+            return $this->Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'File' => $this->getLink(), 'Cid' => $this->getCid(), 'ReadOnly' => $this->ReadOnly]);
 
     }
 
-    public static function getAllList($cid){
-        return DB::table('Cloud')->select()->where('Cid','=',$cid)->get();
+    public static function getAllList($cid,$readOnly){
+        if($readOnly == "teacher")
+            return DB::table('Cloud')->select()->where('Cid','=',$cid)->get();
+        else
+            return DB::table('Cloud')->select()->where('Cid','=',$cid)->where('ReadOnly','=','student')->get();
     }
 
+    public static function getDataByTitle($cid,$title,$readOnly){
+        if($readOnly == "teacher")
+            return DB::table('Cloud')->select()->where('Cid','=',$cid)->where('Name','=','%'.$title."%")->get();
+        else
+            return DB::table('Cloud')->select()->where('Cid','=',$cid)->where('ReadOnly','=','student')->where('Name','=','%'.$title."%")->get();
+    }
     public function toArray() : array
     {
         return get_object_vars($this);

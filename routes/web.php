@@ -63,17 +63,30 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->post('addQuiz', 'LessonController@addQuiz');
 
+        $router->get('showQuiz', 'LessonController@showQuiz');
 
-
+        $router->post('solveQuiz', 'LessonController@solveQuiz');
     });
 
     $router->group(['prefix'=>'data'], function () use ($router){
-        $router->get('getData', 'DataController@getDataList');
-        $router->post('addData', 'DataController@addData');
+        $router->get('getPost', 'DataController@getPostList');
+        $router->post('addPost', 'DataController@addPost');
+        $router->get('getPostByName', 'DataController@getPostByName');
+        $router->get('getPostByTitle', 'DataController@getPostByTitle');
+        $router->get('getPostList', 'DataController@getPostList');
+        $router->get('getDataList', 'DataController@getDataList');
+        $router->get('getDataByTitle', 'DataController@getDataByTitle');
     });
 
     $router->group(['prefix'=>'reward'], function () use ($router){
         $router->get('getUser', 'RewardController@getStudent');
         $router->get('addPoint', 'RewardController@addPoint');
+    });
+
+    $router->group(['prefix'=>'design'], function () use ($router){
+        $router->post('addDesign', 'DesignController@addDesign');
+        $router->post('addFile', 'DesignController@addFile');
+        $router->get('designList', 'DesignController@showList');
+        $router->get('oneDesign', 'DesignController@showOne');
     });
 });

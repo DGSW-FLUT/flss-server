@@ -37,7 +37,7 @@ class LessonController
 
             $path = $file->move('video', uniqid().$file->getClientOriginalName())->getFilename();
 
-            $this->Cloud = new Cloud($file->getClientOriginalName(), $path, $Cid);
+            $this->Cloud = new Cloud($file->getClientOriginalName(), $path, $Cid, 'student');
             return $this->Cloud->insertDB();
 
         } else {
@@ -60,7 +60,7 @@ class LessonController
         $Link = $this->request->input('link');
         if($Link)
         {
-            $this->Cloud = new Cloud($Title, $Link, $ClassId);
+            $this->Cloud = new Cloud($Title, $Link, $ClassId, 'student');
             $this->Cloud->insertDB();
         }
         else if (!$this->uploadVideo($ClassId)){
@@ -93,11 +93,29 @@ class LessonController
         $question = $this->request->input('question');
         $item = $this->request->input('item.*');
         $ranswer = $this->request->input('ranswer');
+        $type = $this->request->input('type');
 
         $quiz = new Quiz();
-        $quiz->setWithoutItem($Lno, $question,$ranswer);
+        $quiz->setWithoutItem($Lno, $question,$ranswer,$type);
         $qid = $quiz->addQuiz();
         $quiz->setItems($item);
         return $quiz->addQuizItem($qid);
+    }
+
+    public function showQuiz(){
+        $lno = $this->request->query('lno');
+        $type = $this->request->query('type');
+
+        $quiz = new Quiz();
+        return $quiz->showQuiz($lno,$type);
+    }
+
+    public function solveQuiz(){
+        $qid = $this->request->input('qid');
+        $answer = $this->request->input('answer');
+        $uid = $this->request->input('uid');
+
+        $quiz = new Quiz();
+        return $quiz->solveQuiz($qid,$answer,$uid);
     }
 }

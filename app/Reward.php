@@ -12,6 +12,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Exception;
+
 class RewardModel
 {
     protected $cid;
