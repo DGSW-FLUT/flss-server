@@ -47,8 +47,7 @@ class DataController
         $cid = $this->request->query('cid');
         $readOnly = $this->request->query('readOnly');
 
-        $data = new Cloud();
-        return $data->getAllList($cid,$readOnly);
+        return Cloud::getAllList($cid,$readOnly);
     }
 
     public function getDataByTitle(){
@@ -56,8 +55,7 @@ class DataController
         $readOnly = $this->request->query('readOnly');
         $title = $this->request->query('title');
 
-        $data = new Cloud();
-        return $data->getDataByTitle($cid,$title,$readOnly);
+        return Cloud::getDataByTitle($cid,$title,$readOnly);
     }
     public function getPostByName(){
         $name = $this->request->query('name');
@@ -78,21 +76,20 @@ class DataController
     public function addPost(){
         $cid = $this->request->input('cid');
         $name = $this->request->input('name');
-
-        if($this->request->hasFile('video')){
-            $path = $this->uploadData();
-            $this->Cloud =  new Cloud($name,$path,$cid);
-        } else {
-            $link = $this->request->input('link');
-            $this->Cloud =  new Cloud($name,$link,$cid);
-        }
-
-        $mid = $this->Cloud->insertDB();
-
         $title = $this->request->input('title');
         $uid = $this->request->input('uid');
         $content = $this->request->input('content');
         $readOnly = $this->request->input('readOnly');
+
+        if($this->request->hasFile('video')){
+            $path = $this->uploadData();
+            $this->Cloud =  new Cloud($name,$path,$cid,$readOnly);
+        } else {
+            $link = $this->request->input('link');
+            $this->Cloud =  new Cloud($name,$link,$cid,$readOnly);
+        }
+
+        $mid = $this->Cloud->insertDB();
 
         $post = new Post();
         $post->setAll($title,$uid,$mid,$cid,$content,$readOnly);
