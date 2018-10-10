@@ -218,7 +218,7 @@ class UserModel
             ->where('Cid', '=', $this->getId())
             ->pluck('Uid');
 
-        if ($count == []) {
+        if (count($count) == 0) {
             return $this->id = DB::table('User')->insertGetId([
                 'Cid' => $this->getId(),
                 'Name' => $this->getName(),

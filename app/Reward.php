@@ -23,6 +23,7 @@ class RewardModel
 
     protected $count;
 
+    protected $name;
     public function __construct()
     {
 
@@ -39,6 +40,7 @@ class RewardModel
         else
             $this->uid = $student['id'];
 
+        $this->name = $student['name'];
         $this->role = $student['role'];
         $this->cid = $cid;
         $this->count = 0;
@@ -64,15 +66,16 @@ class RewardModel
     public function insertDB()
     {
         $uid = DB::table('UserReward')
-            ->select('Uid')
             ->where('Uid', '=', $this->uid)
-            ->get(['Uid']);
+            ->pluck('Uid');
 
-        if ($uid != $this->uid && $this->role == 'student') {
+        if (count($uid) == 0 && $this->role == 'student') {
+
             return DB::table('UserReward')->insertGetId([
                 'Cid' => $this->cid,
                 'Uid' => $this->uid,
-                'Count' => $this->count
+                'Count' => $this->count,
+                'Name' => $this->name
             ]);
         }
 

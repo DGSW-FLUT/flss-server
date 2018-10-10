@@ -65,6 +65,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->get('showQuiz', 'LessonController@showQuiz');
 
+        $router->get('showQuestion', 'LessonController@showQuestion');
+
         $router->post('solveQuiz', 'LessonController@solveQuiz');
     });
 

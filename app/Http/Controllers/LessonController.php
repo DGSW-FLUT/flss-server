@@ -111,6 +111,13 @@ class LessonController
         return $quiz->showQuiz($lno,$type);
     }
 
+    public function showQuestion(){
+        $lno = $this->request->query('lno');
+        $type = $this->request->query('type');
+
+        $quiz = new Quiz();
+        return $quiz->showQuestion($lno,$type);
+    }
     public function solveQuiz(){
         $qid = $this->request->input('qid');
         $answer = $this->request->input('answer');

@@ -125,6 +125,13 @@ class Quiz
         }
     }
 
+    public function showQuestion($lno,$type){
+        try{
+            return DB::table('QuizInfo')->where('Lno', '=', $lno)->where('Type', '=', $type)->get();
+        }catch(Exception $e){
+            return 0;
+        }
+    }
     public function solveQuiz($qid,$answer,$uid){
         DB::table('QuizAnswer')->insert([
             'Qid' => $qid,
