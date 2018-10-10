@@ -67,10 +67,8 @@ class RewardModel
             ->select('Uid')
             ->where('Uid', '=', $this->uid)
             ->get(['Uid']);
-        echo $uid;
-        echo $this->role;
+
         if ($uid != $this->uid && $this->role == 'student') {
-            echo "a";
             return DB::table('UserReward')->insertGetId([
                 'Cid' => $this->cid,
                 'Uid' => $this->uid,
@@ -86,7 +84,7 @@ class RewardModel
     }
 
     public function addPoint($uid, $count){
-       return DB::table('UserReward')->where('Uid', '=', $uid)->update(['Count' => $count]);
+        return DB::table('UserReward')->where('Uid', '=', $uid)->update(['Count' => $count]);
     }
 }
 class Reward
@@ -102,7 +100,7 @@ class Reward
         foreach ($models as $model) {
             $model->insertDB();
         }
-        return;
+        return 1;
     }
 
     public function getStudent($cid){

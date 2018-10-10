@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Design;
 use App\Cloud;
 
@@ -36,7 +37,8 @@ class DesignController
         $cid = $this->request->input('cid');
 
         $design = new Design();
-        return $design->addDesign($cid,$title);
+        $Did = $design->addDesign($cid,$title);
+        return response()->json(['Did' => $Did], Response::HTTP_OK);
     }
 
     public function addFile(){
