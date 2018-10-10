@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\ClasstingRequest;
 use App\iDBModel;
 
-class UserModel implements iDBModel
+class UserModel
 {
 
     /**
@@ -216,8 +216,9 @@ class UserModel implements iDBModel
     {
         $count = DB::table('User')
             ->where('Cid', '=', $this->getId())
-            ->get(['Uid'])[0];
-        if (!$count) {
+            ->pluck('Uid');
+
+        if ($count == []) {
             return $this->id = DB::table('User')->insertGetId([
                 'Cid' => $this->getId(),
                 'Name' => $this->getName(),
@@ -226,19 +227,13 @@ class UserModel implements iDBModel
                 'Role' => $this->getRole()
             ]);
         } else {
-            $this->id = $count->Uid;
+            return $count[0];
         }
-        return false;
     }
 
-    public function toJSON()
+    public function toArray($uid): array
     {
-        return json_encode($this->toArray(), JSON_UNESCAPED_UNICODE);
-    }
-
-    public function toArray(): array
-    {
-        return [id => $this->id, name => $this->name, email => $this->email, profile_image => $this->profile_image, role => $this->role];
+        return ['id' => $this->id, 'uid' => $uid, 'name' => $this->name, 'email' => $this->email, 'profile_image' => $this->profile_image, 'role' => $this->role];
     }
 }
 
@@ -252,7 +247,7 @@ class UserInfo extends Model
             return "Invalid Token";
         $models = UserModel::getUserFromObjectArray($datas);
 
-        $models->insertDB();
-        return $models->toArray();
+        $uid = $models->insertDB();
+        return $models->toArray($uid);
     }
 }
