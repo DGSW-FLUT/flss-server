@@ -9,7 +9,7 @@ use App\iDBModel;
 class ClassModel implements iDBModel
 {
 
-
+    protected $cid;
     /**
      * ClassRoom Identifier Number
      * 클래스 ID
@@ -125,16 +125,17 @@ class ClassModel implements iDBModel
             ->where('CTid', '=', $this->getId())
             ->get(['Cid'])[0];
         if (!$cid) {
-            return $this->id = DB::table('Class')->insertGetId([
+            $this->cid = $this->id = DB::table('Class')->insertGetId([
                 'CTid' => $this->getId(),
                 'Name' => $this->getName(),
                 'URL' => $this->getUrl(),
                 'Profile' => $this->getProfileImage()
             ]);
+            return true;
         } else {
-            $this->id = $cid->Cid;
+            $this->cid = $cid->Cid;
+            return true;
         }
-        return false;
     }
 
 
@@ -287,6 +288,7 @@ class ClassRoom extends Model
         $datas = $request->Ting_Get('/v2/users/' . $userId . '/joined_classes');
         if ($datas == null)
             return null;
+
         $models = ClassModel::getClassesFromObjectArray($datas);
 
         foreach ($models as $model) {
