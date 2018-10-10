@@ -73,7 +73,8 @@ class LessonController
 
         $lesson = new Lesson();
         $lesson->setAll($this->Cloud, $ClassId, $Title, $Explain, $Sub, $Unit, $UserId);
-        return $lesson->insertDB();
+        $Lno = $lesson->insertDB();
+        return ['Lno' => $Lno];
     }
 
     public function getLessonList() {
