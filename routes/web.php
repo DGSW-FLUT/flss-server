@@ -77,7 +77,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     });
 
     $router->group(['prefix'=>'data'], function () use ($router){
-        $router->get('getPost', 'DataController@getPostList');
         $router->post('addPost', 'DataController@addPost');
         $router->get('getPostByName', 'DataController@getPostByName');
         $router->get('getPostByTitle', 'DataController@getPostByTitle');

@@ -92,6 +92,7 @@ class LessonController
         $Cid = $this->request->query('cid');
         return Lesson::getTestList($Cid);
     }
+
     public function deleteClassList(){
         $Lno = $this->request->query('lno');
         $lesson = new Lesson();
