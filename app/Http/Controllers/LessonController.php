@@ -64,7 +64,13 @@ class LessonController
             $this->Cloud->insertDB();
         }
         else if (!$this->uploadVideo($ClassId)){
-            return "video not found";
+            $Sub = new Subject($Subject);
+            $Sub->addYearSubjectDB($Grade, $Semester);
+
+            $lesson = new Lesson();
+            $lesson->setWithOutVideo($ClassId, $Title, $Explain, $Sub, $Unit, $UserId);
+            $Lno = $lesson->insertDB();
+            return response()->json(['Lno' => $Lno], Response::HTTP_OK);
         }
 
 
@@ -82,6 +88,10 @@ class LessonController
         return Lesson::getLessonList($Cid);
     }
 
+    public function getTestList() {
+        $Cid = $this->request->query('cid');
+        return Lesson::getTestList($Cid);
+    }
     public function deleteClassList(){
         $Lno = $this->request->query('lno');
         $lesson = new Lesson();
@@ -94,10 +104,9 @@ class LessonController
         $question = $this->request->input('question');
         $item = $this->request->input('item.*');
         $ranswer = $this->request->input('ranswer');
-        $type = $this->request->input('type');
 
         $quiz = new Quiz();
-        $quiz->setWithoutItem($Lno, $question,$ranswer,$type);
+        $quiz->setWithoutItem($Lno, $question,$ranswer);
         $qid = $quiz->addQuiz();
         $quiz->setItems($item);
         return $quiz->addQuizItem($qid);
@@ -105,19 +114,18 @@ class LessonController
 
     public function showQuiz(){
         $lno = $this->request->query('lno');
-        $type = $this->request->query('type');
 
         $quiz = new Quiz();
-        return $quiz->showQuiz($lno,$type);
+        return $quiz->showQuiz($lno);
     }
 
     public function showQuestion(){
         $lno = $this->request->query('lno');
-        $type = $this->request->query('type');
 
         $quiz = new Quiz();
-        return $quiz->showQuestion($lno,$type);
+        return $quiz->showQuestion($lno);
     }
+
     public function solveQuiz(){
         $qid = $this->request->input('qid');
         $answer = $this->request->input('answer');
@@ -125,5 +133,12 @@ class LessonController
 
         $quiz = new Quiz();
         return $quiz->solveQuiz($qid,$answer,$uid);
+    }
+
+    public function resultQuiz(){
+        $qid = $this->request->query('qid');
+
+        $quiz = new Quiz();
+        return $quiz->resultQuiz($qid);
     }
 }

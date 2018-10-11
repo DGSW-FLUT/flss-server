@@ -25,7 +25,7 @@ class DesignController
 
     public function uploadData()
     {
-        $file = $this->request->file('video');
+        $file = $this->request->file('file');
 
         $path = $file->move('video', uniqid().$file->getClientOriginalName())->getFilename();
 

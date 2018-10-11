@@ -64,7 +64,6 @@ class Cloud implements iDBModel
             return $this->Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'Link' => $this->getLink(), 'Cid' => $this->getCid(), 'ReadOnly' => $this->ReadOnly]);
         else
             return $this->Mid = DB::table('Cloud')->insertGetId(['Name' => $this->getName(), 'File' => $this->getLink(), 'Cid' => $this->getCid(), 'ReadOnly' => $this->ReadOnly]);
-
     }
 
     public static function getAllList($cid,$readOnly){
@@ -88,7 +87,7 @@ class Cloud implements iDBModel
     /**
      * @return int
      */
-    public function getMid(): int
+    public function getMid()
     {
         return $this->Mid;
     }

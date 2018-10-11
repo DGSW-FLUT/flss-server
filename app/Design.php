@@ -9,7 +9,7 @@
 namespace App;
 
 use Illuminate\Support\Facades\DB;
-
+use Exception;
 class Design
 {
     public function addDesign($cid,$title){
@@ -20,10 +20,15 @@ class Design
     }
 
     public function addFile($did,$mid){
-        return DB::table('ClassAttach')->insert([
-            'Did' => $did,
-            'Mid' => $mid
-        ]);
+        try {
+            DB::table('ClassAttach')->insert([
+                'Did' => $did,
+                'Mid' => $mid
+            ]);
+            return 1;
+        } catch(Exception $e){
+            return 0;
+        }
     }
 
     public function designList($cid){
@@ -31,6 +36,9 @@ class Design
     }
 
     public function oneDesign($did){
-        return DB::table('ClassAttach')->select()->where('Did','=',$did)->get();
+        return DB::table('ClassAttach')->select()
+            ->join('Design','Design.Did','=','ClassAttach.Did')
+            ->join('Cloud','Cloud.Mid','=','ClassAttach.Mid')
+            ->where('ClassAttach.Did','=',$did)->get();
     }
 }
