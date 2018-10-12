@@ -5,7 +5,6 @@
 $router->post('/', function () use ($router) {
     return response()->setContent("sdfsd")->send();
 });
-
 $router->group(['prefix' => 'api'], function () use ($router) {
     $router->group(['prefix' => 'auth'], function () use ($router) {
         $router->get('get_token', function () use ($router) {
@@ -77,6 +76,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('getPostList', 'DataController@getPostList');
         $router->get('getDataList', 'DataController@getDataList');
         $router->get('getDataByTitle', 'DataController@getDataByTitle');
+        $router->post('changeReadOnly', 'DataController@changeReadOnly');
     });
 
     $router->group(['prefix'=>'reward'], function () use ($router){
@@ -93,5 +93,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 });
 
 $router->get('/{route:.*}', function () use ($router) {
-    return response()->make(include'main.html', 200);
+    ob_start();
+    $html = include('main.html');
+    $html = ob_get_clean();
+    return response()->make($html, 200);
 });

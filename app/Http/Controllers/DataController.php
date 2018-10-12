@@ -95,4 +95,12 @@ class DataController
         $post->setAll($title,$uid,$mid,$cid,$content,$readOnly);
         return $post->insertDB();
     }
+
+    public function changeReadOnly(){
+        $pid = $this->request->input('pid');
+        $readOnly = $this->request->input('readOnly');
+
+        $post = new Post();
+        return $post->changeReadOnly($pid,$readOnly);
+    }
 }

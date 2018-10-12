@@ -33,6 +33,18 @@ class Post
         $this->readOnly = $readOnly;
     }
 
+    public function changeReadOnly($pid,$readOnly){
+        try {
+            DB::table('Post')->where('Pid', '=', $pid)->update(['ReadOnly' => $readOnly]);
+
+            $mid = DB::table('Post')->where('Pid', '=', $pid)->pluck('Mid');
+
+            DB::table('Cloud')->where('Mid', '=', $mid)->update(['ReadOnly' => $readOnly]);
+            return 1;
+        } catch (Exception $e){
+            return 0;
+        }
+    }
     public function insertDB(){
         try {
             DB::table('Post')->insert([
