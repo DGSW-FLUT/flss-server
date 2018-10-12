@@ -93,5 +93,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 });
 
 $router->get('/{route:.*}', function () use ($router) {
-    return response()->make(include'main.html', 200);
+    ob_start();
+    $html = include('main.html');
+    $html = ob_get_clean();
+    return response()->make($html, 200);
+    // $router->file('test.html');
+    // return response()->make(include(__DIR__.'/main.html'), 200);
 });
