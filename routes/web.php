@@ -92,3 +92,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('oneDesign', 'DesignController@showOne');
     });
 });
+
+$router->get('/{any:.*}', function () use ($router) {
+    return response()->make(include'main.html', 200);
+});
