@@ -32,7 +32,10 @@ class Design
     }
 
     public function designList($cid){
-        return DB::table('Design')->select()->where('Cid','=',$cid)->get();
+        return DB::table('Design')->select()
+            ->where('Cid','=',$cid)
+            ->whereRaw('Did IN (select Did from ClassAttach)')
+            ->get();
     }
 
     public function oneDesign($did){

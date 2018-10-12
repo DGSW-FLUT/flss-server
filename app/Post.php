@@ -53,10 +53,12 @@ class Post
         if($readOnly == "teacher"){
             return DB::table('Post')->select()
                 ->join('Cloud', 'Cloud.Mid', '=', 'Post.Mid')
+                ->orderByDesc('UploadTime')
                 ->where('Post.Cid', '=', $cid)->get();
         } else {
             return DB::table('Post')->select()
                 ->join('Cloud', 'Cloud.Mid', '=', 'Post.Mid')
+                ->orderByDesc('UploadTime')
                 ->where('Post.Cid', '=', $cid)
                 ->where('Post.ReadOnly', '=', 'student')->get();
         }
@@ -67,6 +69,7 @@ class Post
 
         return DB::table('Post')->select()
             ->join('Cloud', 'Cloud.Mid', '=', 'Post.Mid')
+            ->orderByDesc('UploadTime')
             ->where('Post.Uid', '=', $uid)
             ->where('Post.Cid', '=', $cid)->get();
     }
@@ -74,6 +77,7 @@ class Post
     public function getDataByTitle($cid, $title){
         return DB::table('Post')->select()
             ->join('Cloud', 'Cloud.Mid', '=', 'Post.Mid')
+            ->orderByDesc('UploadTime')
             ->where('Post.Title','=', "%".$title."%")
             ->where('Post.Cid', '=', $cid)->get();
     }

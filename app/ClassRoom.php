@@ -123,8 +123,8 @@ class ClassModel implements iDBModel
     {
         $cid = DB::table('Class')
             ->where('CTid', '=', $this->getId())
-            ->get(['Cid'])[0];
-        if (!$cid) {
+            ->pluck('Cid');
+        if (count($cid) == 0) {
             $this->cid = $this->id = DB::table('Class')->insertGetId([
                 'CTid' => $this->getId(),
                 'Name' => $this->getName(),
@@ -133,7 +133,7 @@ class ClassModel implements iDBModel
             ]);
             return true;
         } else {
-            $this->cid = $cid->Cid;
+            $this->cid = $cid[0];
             return true;
         }
     }

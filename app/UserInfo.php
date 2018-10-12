@@ -219,7 +219,7 @@ class UserModel
             ->pluck('Uid');
 
         if (count($count) == 0) {
-            return $this->id = DB::table('User')->insertGetId([
+            return DB::table('User')->insertGetId([
                 'Cid' => $this->getId(),
                 'Name' => $this->getName(),
                 'Email' => $this->getEmail(),
