@@ -97,4 +97,10 @@ $router->get('/{route:.*}', function () use ($router) {
     $html = include('main.html');
     $html = ob_get_clean();
     return response()->make($html, 200);
+<<<<<<< HEAD
 });
+=======
+    // $router->file('test.html');
+    // return response()->make(include(__DIR__.'/main.html'), 200);
+});
+>>>>>>> dbdeacf685961419c28ca72cb65585d8811be3a1
