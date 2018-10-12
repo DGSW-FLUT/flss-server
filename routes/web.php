@@ -2,12 +2,6 @@
 
 
 /** @var \Laravel\Lumen\Routing\Router $router */
-$router->get('/', function () use ($router) {
-    return response()->make(include'main.html', 200);
-});
-$router->get('/classting_handle', function () use ($router) {
-    return response()->make(include'main.html', 200);
-});
 $router->post('/', function () use ($router) {
     return response()->setContent("sdfsd")->send();
 });
@@ -98,6 +92,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     });
 });
 
-$router->get('/{any:.*}', function () use ($router) {
+$router->get('/{route:.*}', function () use ($router) {
     return response()->make(include'main.html', 200);
 });
