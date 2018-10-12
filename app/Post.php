@@ -9,7 +9,7 @@
 namespace App;
 
 use Illuminate\Support\Facades\DB;
-
+use Exception;
 class Post
 {
     protected $title;
@@ -34,31 +34,47 @@ class Post
     }
 
     public function insertDB(){
-        return DB::table('Post')->insert([
-            'Title' => $this->title,
-            'Uid' => $this->uid,
-            'Mid' => $this->mid,
-            'Cid' => $this->cid,
-            'Content' => $this->content,
-            'ReadOnly' => $this->readOnly
-        ]);
+        try {
+            DB::table('Post')->insert([
+                'Title' => $this->title,
+                'Uid' => $this->uid,
+                'Mid' => $this->mid,
+                'Cid' => $this->cid,
+                'Content' => $this->content,
+                'ReadOnly' => $this->readOnly
+            ]);
+            return 1;
+        } catch (Exception $e){
+            return 0;
+        }
     }
 
     public function getAllList($cid,$readOnly){
         if($readOnly == "teacher"){
-            return DB::table('Post')->select()->where('Cid', '=', $cid)->get();
+            return DB::table('Post')->select()
+                ->join('Cloud', 'Cloud.Mid', '=', 'Post.Mid')
+                ->where('Post.Cid', '=', $cid)->get();
         } else {
-            return DB::table('Post')->select()->where('Cid', '=', $cid)->where('ReadOnly', '=', 'student')->get();
+            return DB::table('Post')->select()
+                ->join('Cloud', 'Cloud.Mid', '=', 'Post.Mid')
+                ->where('Post.Cid', '=', $cid)
+                ->where('Post.ReadOnly', '=', 'student')->get();
         }
     }
 
     public function getDataByName($cid, $name){
         $uid = DB::table('User')->where('name', '=', $name)->pluck('Uid');
 
-        return DB::table('Post')->select()->where('Uid', '=', $uid)->where('Cid', '=', $cid)->get();
+        return DB::table('Post')->select()
+            ->join('Cloud', 'Cloud.Mid', '=', 'Post.Mid')
+            ->where('Post.Uid', '=', $uid)
+            ->where('Post.Cid', '=', $cid)->get();
     }
 
     public function getDataByTitle($cid, $title){
-        return DB::table('Post')->select()->where('Title','=', "%".$title."%")->where('Cid', '=', $cid)->get();
+        return DB::table('Post')->select()
+            ->join('Cloud', 'Cloud.Mid', '=', 'Post.Mid')
+            ->where('Post.Title','=', "%".$title."%")
+            ->where('Post.Cid', '=', $cid)->get();
     }
 }

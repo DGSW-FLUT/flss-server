@@ -21,7 +21,6 @@ class Quiz
 
     protected $items;
 
-    protected $type;
     /**
      * @return mixed
      */
@@ -86,17 +85,16 @@ class Quiz
         $this->items = $items;
     }
 
-    public function setWithoutItem($Lno, $question, $ranswer,$type)
+    public function setWithoutItem($Lno, $question, $ranswer)
     {
         $this->Lno = $Lno;
         $this->question = $question;
         $this->ranswer = $ranswer;
-        $this->type = $type;
     }
 
     public function addQuiz()
     {
-        return $qid = DB::table('QuizInfo')->insertGetId(['Lno'=>$this->Lno, 'Title'=>$this->question, 'Ranswer'=>$this->ranswer, 'Type'=>$this->type]);
+        return $qid = DB::table('QuizInfo')->insertGetId(['Lno'=>$this->Lno, 'Title'=>$this->question, 'Ranswer'=>$this->ranswer]);
     }
 
     public function addQuizItem($qid)
@@ -116,18 +114,18 @@ class Quiz
 
     }
 
-    public function showQuiz($lno,$type){
+    public function showQuiz($lno){
         try {
-            $qid = DB::table('QuizInfo')->where('Lno', '=', $lno)->where('Type', '=', $type)->pluck('Qid');
+            $qid = DB::table('QuizInfo')->where('Lno', '=', $lno)->pluck('Qid');
             return DB::table('QuizChoice')->select()->where('Qid', '=', $qid)->get();
         } catch(Exception $e) {
             return 0;
         }
     }
 
-    public function showQuestion($lno,$type){
+    public function showQuestion($lno){
         try{
-            return DB::table('QuizInfo')->where('Lno', '=', $lno)->where('Type', '=', $type)->get();
+            return DB::table('QuizInfo')->where('Lno', '=', $lno)->get();
         }catch(Exception $e){
             return 0;
         }
@@ -146,5 +144,13 @@ class Quiz
         } else {
             return 0;
         }
+    }
+
+    public function resultQuiz($qid){
+        return DB::table('QuizAnswer')->select()
+                ->join('QuizInfo','QuizInfo.Qid','=','QuizAnswer.Qid')
+                ->join('User','User.Uid','=','QuizAnswer.Uid')
+                ->where('QuizAnswer.Qid','=',$qid)
+                ->get();
     }
 }

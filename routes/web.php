@@ -5,6 +5,9 @@
 $router->get('/', function () use ($router) {
     return response()->make(include'main.html', 200);
 });
+$router->get('/classting_handle', function () use ($router) {
+    return response()->make(include'main.html', 200);
+});
 $router->post('/', function () use ($router) {
     return response()->setContent("sdfsd")->send();
 });
@@ -55,6 +58,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
          * */
         $router->get('list', 'LessonController@getLessonList');
 
+        $router->get('testList', 'LessonController@getTestList');
         /*
          * Lesson 삭제
          * param (lno)
@@ -68,10 +72,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('showQuestion', 'LessonController@showQuestion');
 
         $router->post('solveQuiz', 'LessonController@solveQuiz');
+
+        $router->get('resultQuiz', 'LessonController@resultQuiz');
     });
 
     $router->group(['prefix'=>'data'], function () use ($router){
-        $router->get('getPost', 'DataController@getPostList');
         $router->post('addPost', 'DataController@addPost');
         $router->get('getPostByName', 'DataController@getPostByName');
         $router->get('getPostByTitle', 'DataController@getPostByTitle');

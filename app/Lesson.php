@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Support\Facades\DB;
 use App\iDBModel;
-
+use Exception;
 class Lesson implements iDBModel
 {
 
@@ -69,6 +69,16 @@ class Lesson implements iDBModel
         $this->Owner = $Owner;
     }
 
+    public function setWithOutVideo(int $cid, string $Name, string $Explain, Subject $Subject, string $Unit, int $Owner)
+    {
+        $this->Cid = $cid;
+        $this->Name = $Name;
+        $this->Explain = $Explain;
+        $this->Subject = $Subject;
+        $this->Unit = $Unit;
+        $this->Owner = $Owner;
+    }
+
     /**
      * @return int
      */
@@ -80,7 +90,11 @@ class Lesson implements iDBModel
 
     public function insertDB() : int
     {
-        return DB::table('Lesson')->insertGetId($this->toArray());
+        if(isset($this->Video)){
+            return DB::table('Lesson')->insertGetId($this->toArray());
+        } else {
+            return DB::table('Lesson')->insertGetId($this->toArrayWithOutVideo());
+        }
     }
 
     public function toArray(): array
@@ -94,11 +108,19 @@ class Lesson implements iDBModel
         return $arrays;
     }
 
+    public function toArrayWithOutVideo(): array{
+        $arrays = get_object_vars($this);
+        $arrays['YSid'] = $this->Subject->YSid;
+        unset($arrays['Video']);
+        unset($arrays['Subject']);
+
+        return $arrays;
+    }
     public static function getLessonList($cid) : array{
         return DB::table('Lesson')
             ->select('Lno', 'Vid', 'Lesson.Cid', 'Lesson.Name as LessonName',
                 'Explain', 'Syear', 'Semes', 'Subject.Name as SubjectName',
-                'Unit', 'Owner as OwnerId', 'File', 'Link', 'AddTime')
+                'Unit', 'Owner as OwnerId', 'File', 'Link', 'UpTime')
             ->join('Cloud', 'Vid', "=", 'Mid')
             ->join('YearSubject', 'YearSubject.YSid', '=', 'Lesson.YSid')
             ->join('Subject', 'Subject.Sid', '=', 'YearSubject.Sid')
@@ -108,6 +130,18 @@ class Lesson implements iDBModel
             ->toArray();
     }
 
+    public static function getTestList($cid): array{
+        return DB::table('Lesson')
+            ->select('Lno', 'Lesson.Cid', 'Lesson.Name as LessonName',
+                'Explain', 'Syear', 'Semes', 'Subject.Name as SubjectName',
+                'Unit', 'Owner as OwnerId', 'UpTime')
+            ->join('YearSubject', 'YearSubject.YSid', '=', 'Lesson.YSid')
+            ->join('Subject', 'Subject.Sid', '=', 'YearSubject.Sid')
+            ->where('Lesson.Cid', '=', $cid)
+            ->where('Lesson.Vid', '=', null)
+            ->get('*')
+            ->toArray();
+    }
     /**
      * @return int
      */

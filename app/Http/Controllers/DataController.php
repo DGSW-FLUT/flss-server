@@ -37,7 +37,7 @@ class DataController
 
     public function getPostList(){
         $cid = $this->request->query('cid');
-        $readOnly = $this->request->query('role');
+        $readOnly = $this->request->query('readOnly');
 
         $post = new Post();
         return $post->getAllList($cid,$readOnly);
