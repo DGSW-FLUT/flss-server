@@ -24,3 +24,5 @@
 | /api/design/addFile | POST(ajax) | 수업설계 파일 추가 | (did,name,cid, file or link or Mid) | did: 수업설계 고유 아이디, name: 파일이름, cid: 클래스 고유 아이디, file: 첨부파일, link: 인터넷 상의 파일 링크(ex. youtube), Mid: 자료 고유 아이디(우리 DB안) | 0또는 1 | 0: 실패 1:성공 |
 | /api/design/designList | GET(ajax) | 수업설계 리스트 확인 | (cid) | cid: 클래스 고유 아이디 | Array(Did,Title,Cid) | Did: 수업설계 고유 아이디 | Title: 수업설계 제목,Cid: 클래스 고유아이디 |
 | /api/design/oneDesign | GET(ajax) | 하나의 수업설계 확인 | (did) | did: 자료 고유 아이디 | Array(Did,Mid) | Did: 수업설계 고유 아이디, Mid: 자료 고유 아이디 |
+| /api/portfolio/add | POST(ajax) | 포트폴리오 올리기 | (portfolio(formdata), uid, cid) | portfolio: pdf파일, uid, cid | 숫자 | Portfolio 고유번호 |
+| /api/portfolio/list | GET(ajax) | 포트폴리오 리스트 | (cid) | cid: ClassID | (Fid, Mid, Uid, User테이블정보, Cloud테이블 정보) | Fid: Portfolio 고유번호, 나머지는 직접 해보길 Cloud에 File제목으로 파일을 다운받으려면 flss.kr/portfoliofile/파일이름 으로 접근|
