@@ -10,6 +10,7 @@ namespace App;
 
 use Illuminate\Support\Facades\DB;
 use Exception;
+
 class Post
 {
     protected $title;
@@ -63,13 +64,17 @@ class Post
 
     public function getAllList($cid,$readOnly){
         if($readOnly == "teacher"){
-            return DB::table('Post')->select()
+            return DB::table('Post')
+                ->select('Post.Pid','User.Uid','User.Name','Cloud.Mid','Cloud.File','Cloud.Name as FileName','Post.Title','Post.Content','Post.UploadTime')
                 ->join('Cloud', 'Cloud.Mid', '=', 'Post.Mid')
+                ->join('User', 'User.Uid', '=', 'Post.Uid')
                 ->orderByDesc('UploadTime')
                 ->where('Post.Cid', '=', $cid)->get();
         } else {
-            return DB::table('Post')->select()
+            return DB::table('Post')
+                ->select('Post.Pid','User.Uid','User.Name','Cloud.Mid','Cloud.File','Cloud.Name as FileName','Post.Title','Post.Content','Post.UploadTime')
                 ->join('Cloud', 'Cloud.Mid', '=', 'Post.Mid')
+                ->join('User', 'User.Uid', '=', 'Post.Uid')
                 ->orderByDesc('UploadTime')
                 ->where('Post.Cid', '=', $cid)
                 ->where('Post.ReadOnly', '=', 'student')->get();
@@ -79,11 +84,27 @@ class Post
     public function getDataByName($cid, $name){
         $uid = DB::table('User')->where('name', '=', $name)->pluck('Uid');
 
-        return DB::table('Post')->select()
-            ->join('Cloud', 'Cloud.Mid', '=', 'Post.Mid')
-            ->orderByDesc('UploadTime')
-            ->where('Post.Uid', '=', $uid)
-            ->where('Post.Cid', '=', $cid)->get();
+        try {
+            if (count($uid) > 1) {
+                return DB::table('Post')
+                    ->select('Post.Pid','User.Uid','User.Name','Cloud.Mid','Cloud.File','Cloud.Name as FileName','Post.Title','Post.Content','Post.UploadTime')
+                    ->join('Cloud', 'Cloud.Mid', '=', 'Post.Mid')
+                    ->join('User', 'User.Uid', '=', 'Post.Uid')
+                    ->orderByDesc('UploadTime')
+                    ->whereRaw('Post.Uid IN (select Uid from User where Name = "' . $name . '")')
+                    ->where('Post.Cid', '=', $cid)->get();
+            } else {
+                return DB::table('Post')
+                    ->select('Post.Pid','User.Uid','User.Name','Cloud.Mid','Cloud.File','Cloud.Name as FileName','Post.Title','Post.Content','Post.UploadTime')
+                    ->join('Cloud', 'Cloud.Mid', '=', 'Post.Mid')
+                    ->join('User', 'User.Uid', '=', 'Post.Uid')
+                    ->orderByDesc('UploadTime')
+                    ->where('Post.Uid', '=', $uid)
+                    ->where('Post.Cid', '=', $cid)->get();
+            }
+        }catch (Exception $e){
+            return -1;
+        }
     }
 
     public function getDataByTitle($cid, $title){
