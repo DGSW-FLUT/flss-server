@@ -95,6 +95,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('add', 'PortfolioController@addPortfolio');
         $router->get('list', 'PortfolioController@getPortfolioList');
     });
+
+    $router->group(['prefix'=>'interaction'], function () use ($router) {
+        $router->post('add', 'InteractionController@uploadFile');
+    });
 });
 
 $router->get('/{route:.*}', function () use ($router) {
