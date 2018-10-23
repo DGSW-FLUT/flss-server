@@ -24,6 +24,8 @@ class RewardModel
     protected $count;
 
     protected $name;
+
+    protected $profile_image;
     public function __construct()
     {
 
@@ -35,11 +37,9 @@ class RewardModel
         if (is_object($student)) {
             $student = get_object_vars($student);
         }
-        if (isset($student['id']))
-            $this->uid = $student['id'];
-        else
-            $this->uid = $student['id'];
 
+        $this->uid = $student['id'];
+        $this->profile_image = $student['profile_image'];
         $this->name = $student['name'];
         $this->role = $student['role'];
         $this->cid = $cid;
@@ -65,21 +65,14 @@ class RewardModel
      */
     public function insertDB()
     {
-        $uid = DB::table('UserReward')
-            ->where('Uid', '=', $this->uid)
-            ->pluck('Uid');
-
-        if (count($uid) == 0 && $this->role == 'student') {
-
-            return DB::table('UserReward')->insertGetId([
+        if($this->role == 'student'){
+            return DB::table('UserReward')->updateOrInsert(['Uid' => $this->uid], [
                 'Cid' => $this->cid,
                 'Uid' => $this->uid,
-                'Count' => $this->count,
-                'Name' => $this->name
+                'Name' => $this->name,
+                'Profile' => $this->profile_image
             ]);
         }
-
-        return false;
     }
 
     public static function getStudentList($cid){
@@ -112,13 +105,14 @@ class Reward
 
     public function addStudentPoint($uid, $point){
         $reward = new RewardModel();
+
         try{
             for($i = 0; $i < count($uid); $i++){
                 $reward->addPoint($uid[$i],$point[$i]);
             }
             return 1;
-        }catch(Exception $e){
-            return $reward->addPoint($uid,$point);
+        } catch (Exception $e){
+            return $reward->addPoint($uid, $point);
         }
     }
 }

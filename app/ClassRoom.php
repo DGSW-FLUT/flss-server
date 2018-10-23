@@ -121,21 +121,15 @@ class ClassModel implements iDBModel
      */
     public function insertDB()
     {
-        $cid = DB::table('Class')
-            ->where('CTid', '=', $this->getId())
-            ->pluck('Cid');
-        if (count($cid) == 0) {
-            $this->cid = $this->id = DB::table('Class')->insertGetId([
-                'CTid' => $this->getId(),
-                'Name' => $this->getName(),
-                'URL' => $this->getUrl(),
-                'Profile' => $this->getProfileImage()
-            ]);
-            return true;
-        } else {
-            $this->cid = $cid[0];
-            return true;
-        }
+        DB::table('Class')->updateOrInsert(['CTid' => $this->getId()],[
+            'CTid' => $this->getId(),
+            'Name' => $this->getName(),
+            'URL' => $this->getUrl(),
+            'Profile' => $this->getProfileImage()
+        ]);
+
+        $this->cid = DB::table('Class')->where('CTid','=',$this->getId())->pluck('Cid')[0];
+        return true;
     }
 
 

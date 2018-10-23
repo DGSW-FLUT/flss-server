@@ -37,8 +37,8 @@ class RewardController
     }
 
     public function addPoint(){
-        $uid = $this->request->query('uid');
-        $point = $this->request->query('point');
+        $uid = $this->request->input('uid.*');
+        $point = $this->request->input('point.*');
 
         $userReward = new Reward();
         return $userReward->addStudentPoint($uid,$point);

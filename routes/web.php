@@ -81,7 +81,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     $router->group(['prefix'=>'reward'], function () use ($router){
         $router->get('getUser', 'RewardController@getStudent');
-        $router->get('addPoint', 'RewardController@addPoint');
+        $router->post('addPoint', 'RewardController@addPoint');
     });
 
     $router->group(['prefix'=>'design'], function () use ($router){
@@ -98,6 +98,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     $router->group(['prefix'=>'interaction'], function () use ($router) {
         $router->post('add', 'InteractionController@uploadFile');
+    });
+
+    $router->group(['prefix'=>'notice'], function () use ($router) {
+        $router->post('addNotice', 'NoticeController@addNotice');
+        $router->get('showNotice', 'NoticeController@showNotice');
     });
 });
 

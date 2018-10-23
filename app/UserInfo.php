@@ -214,21 +214,15 @@ class UserModel
      */
     public function insertDB()
     {
-        $count = DB::table('User')
-            ->where('Cid', '=', $this->getId())
-            ->pluck('Uid');
+        DB::table('User')->updateOrInsert(['Cid' => $this->getId()],[
+            'Cid' => $this->getId(),
+            'Name' => $this->getName(),
+            'Email' => $this->getEmail(),
+            'Profile' => $this->getProfileImage(),
+            'Role' => $this->getRole()
+        ]);
 
-        if (count($count) == 0) {
-            return DB::table('User')->insertGetId([
-                'Cid' => $this->getId(),
-                'Name' => $this->getName(),
-                'Email' => $this->getEmail(),
-                'Profile' => $this->getProfileImage(),
-                'Role' => $this->getRole()
-            ]);
-        } else {
-            return $count[0];
-        }
+        return DB::table('User')->where(['Cid' => $this->getId()])->pluck('Cid')[0];
     }
 
     public function toArray($uid): array
