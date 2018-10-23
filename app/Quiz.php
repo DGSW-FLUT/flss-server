@@ -131,18 +131,24 @@ class Quiz
         }
     }
     public function solveQuiz($qid,$answer,$uid){
-        DB::table('QuizAnswer')->insert([
-            'Qid' => $qid,
-            'Uid' => $uid,
-            'Choice' => $answer
-        ]);
+        try{
+            DB::table('QuizAnswer')->insert([
+                'Qid' => $qid,
+                'Uid' => $uid,
+                'Choice' => $answer
+            ]);
 
-        $ranswer = DB::table('QuizInfo')->where('Qid', '=', $qid)->pluck('Ranswer');
+            $ranswer = DB::table('QuizInfo')->where('Qid', '=', $qid)->pluck('Ranswer');
 
-        if($ranswer[0] == $answer){
-            return 1;
-        } else {
-            return 0;
+            if($ranswer[0] == $answer){
+                return 1;
+            }
+
+            else {
+                return 0;
+            }
+        }catch(Exception $e){
+            return -1;
         }
     }
 
