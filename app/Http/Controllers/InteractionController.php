@@ -17,7 +17,7 @@ class InteractionController
         $file = $this->request->file('file');
         if (!$file)
             return null;
-        $path = $file->move('interaction', uniqid().$file->getClientOriginalName())->getFilename();
+        $path = $file->move('interactionItem', uniqid().$file->getClientOriginalName())->getFilename();
         return $path;
     }
     public function uploadFile() {
