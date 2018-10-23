@@ -45,7 +45,7 @@ class PortfolioController
             $portfolio = new Portfolio($UserId, $Mid);
             return $portfolio->insertDB();
         }
-        return 'Insert Error';
+        return response()->json(['success'=>false], 500);
     }
     public function getPortfolioList() {
         $ClassId = $this->request->query('cid');
