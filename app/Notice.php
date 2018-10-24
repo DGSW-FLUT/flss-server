@@ -25,6 +25,10 @@ class Notice
     }
 
     public static function showNotice($cid){
-        return DB::table('Notice')->where('Cid','=',$cid)->pluck('Contents')[0];
+        try {
+            return DB::table('Notice')->where('Cid', '=', $cid)->pluck('Contents')[0];
+        } catch (Exception $e) {
+            return 'Notice Undefined';
+        }
     }
 }
