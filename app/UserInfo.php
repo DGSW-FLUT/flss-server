@@ -222,7 +222,7 @@ class UserModel
             'Role' => $this->getRole()
         ]);
 
-        return DB::table('User')->where(['Cid' => $this->getId()])->pluck('Cid')[0];
+        return DB::table('User')->where(['Cid' => $this->getId()])->pluck('Uid')[0];
     }
 
     public function toArray($uid): array
