@@ -106,6 +106,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('addNotice', 'NoticeController@addNotice');
         $router->get('showNotice', 'NoticeController@showNotice');
     });
+
+    $router->group(['prefix'=>'comment'], function () use ($router){
+        $router->post('addComment', 'CommentController@addComment');
+        $router->get('showComment', 'CommentController@showComment');
+    });
 });
 
 $router->get('/{route:.*}', function () use ($router) {
