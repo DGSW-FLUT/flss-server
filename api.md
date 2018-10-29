@@ -26,3 +26,6 @@
 | /api/design/oneDesign | GET(ajax) | 하나의 수업설계 확인 | (did) | did: 자료 고유 아이디 | Array(Did,Mid) | Did: 수업설계 고유 아이디, Mid: 자료 고유 아이디 |
 | /api/portfolio/add | POST(ajax) | 포트폴리오 올리기 | (portfolio(formdata), uid, cid) | portfolio: pdf파일, uid, cid | 숫자 | Portfolio 고유번호 |
 | /api/portfolio/list | GET(ajax) | 포트폴리오 리스트 | (cid) | cid: ClassID | (Fid, Mid, Uid, User테이블정보, Cloud테이블 정보) | Fid: Portfolio 고유번호, 나머지는 직접 해보길 Cloud에 File제목으로 파일을 다운받으려면 flss.kr/portfoliofile/파일이름 으로 접근|
+| /api/interaction/add | GET(ajax) | 상호작용 방 추가 | (cid, topic) | cid: ClassID, topic: 주제 | 숫자 | 상호작용 방 id |
+| /api/interaction/addFile | POST(ajax) | 상호작용 파일 추가 | (file (formdata)) | file: 파일 | null | |
+| /api/interaction/list | GET(ajax) | 상호작용 목록 불러오기 | (cid) | cid: classID | Array(Aid, Topic, Cid) | Aid: 상호작용 id(이걸로 socket join함), Topic: 주제, Cid: 클래스 id) |

@@ -97,7 +97,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     });
 
     $router->group(['prefix'=>'interaction'], function () use ($router) {
-        $router->post('add', 'InteractionController@uploadFile');
+        $router->post('addFile', 'InteractionController@uploadFile');
+        $router->get('add', 'InteractionController@createInteraction');
+        $router->get('list', 'InteractionController@getInteraction');
     });
 
     $router->group(['prefix'=>'notice'], function () use ($router) {
