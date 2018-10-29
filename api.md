@@ -29,5 +29,5 @@
 | /api/interaction/add | GET(ajax) | 상호작용 방 추가 | (cid, topic) | cid: ClassID, topic: 주제 | 숫자 | 상호작용 방 id |
 | /api/interaction/addFile | POST(ajax) | 상호작용 파일 추가 | (file (formdata)) | file: 파일 | null | |
 | /api/interaction/list | GET(ajax) | 상호작용 목록 불러오기 | (cid) | cid: classID | Array(Aid, Topic, Cid) | Aid: 상호작용 id(이걸로 socket join함), Topic: 주제, Cid: 클래스 id) |
-| /api/comment/addComment | POST(ajax) | 댓글 추가 | (uid,type,post,content) | uid: UserId, type: 'lesson' or 'post', post: lessonId or postId, content: 댓글 | Coid | Coid: 댓글Id |
-| /api/comment/showComment | GET(ajax) | 댓글 리스트 | (type,post) | type: 'lesson' or 'post', post: lessonId or postId | Array(Coid,
+| /api/comment/addComment | POST(ajax) | 댓글 추가 | (uid,type,post,content) | uid: UserId, type: lesson = 0 or post = 1, post: lessonId or postId, content: 댓글 | Coid | Coid: 댓글Id |
+| /api/comment/showComment | GET(ajax) | 댓글 리스트 | (type,post) | type: lesson = 0 or post = 1, post: lessonId or postId | Array(Coid,type,content,Uid,time,post,Cid,Name,Email,Profile,Role) | Coid: 댓글Id, type: lesson = 0 or post = 1, content = 댓글 본문, Uid: userId, time: 댓글 추가 시간,post: lessonId or postId,Cid: ClasstingId(user),Name: 유저이름,Profile: 유저이미지,Role: 역할) |
