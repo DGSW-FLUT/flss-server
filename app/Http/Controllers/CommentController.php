@@ -28,7 +28,7 @@ class CommentController
         $content = $this->request->input('content');
 
         $comment = new Comment();
-        $comment->setAll($owner,$type,$post,$content);
+        $comment->setAll($owner,$type,$content,$post);
         return $comment->addComment();
     }
 
