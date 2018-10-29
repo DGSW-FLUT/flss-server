@@ -69,7 +69,8 @@ class Post
                 ->join('Cloud', 'Cloud.Mid', '=', 'Post.Mid')
                 ->join('User', 'User.Uid', '=', 'Post.Uid')
                 ->orderByDesc('UploadTime')
-                ->where('Post.Cid', '=', $cid)->get();
+                ->where('Post.Cid', '=', $cid)
+                ->where('Post.ReadOnly', '=', 'teacher')->get();
         } else {
             return DB::table('Post')
                 ->select('Post.Pid','User.Uid','User.Name','Cloud.Mid','Cloud.File','Cloud.Name as FileName','Post.Title','Post.Content','Post.UploadTime')
@@ -109,7 +110,9 @@ class Post
 
     public function getDataByTitle($cid, $title){
         return DB::table('Post')->select()
+            ->select('Post.Pid','User.Uid','User.Name','Cloud.Mid','Cloud.File','Cloud.Name as FileName','Post.Title','Post.Content','Post.UploadTime')
             ->join('Cloud', 'Cloud.Mid', '=', 'Post.Mid')
+            ->join('User', 'User.Uid', '=', 'Post.Uid')
             ->orderByDesc('UploadTime')
             ->where('Post.Title','=', "%".$title."%")
             ->where('Post.Cid', '=', $cid)->get();
