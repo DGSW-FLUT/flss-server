@@ -83,7 +83,7 @@ class Lesson implements iDBModel
      * @return int
      */
     public function deleteLessonDB(){
-        return DB::table('Lesson')->delete(['Lno'=>$this->Lno]);
+        return DB::table('Lesson')->where('Lno', '=', $this->Lno)->delete();
     }
 
 
