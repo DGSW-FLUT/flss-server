@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <title>Document</title>
+    <script>
+        function uploadFile(){
+            var form = $('#FILE_FORM')[0];
+            var formData = new FormData(form);
+            formData.append("video", $("#video")[0].files[0]);
+
+            $.ajax({
+                url: '/api/lesson/add',
+                processData: false,
+                contentType: false,
+                data: formData,
+                type: 'POST',
+                success: function(result, data, e){
+                    console.log(result)
+                }
+            });
+        }
+
+    </script>
+<body>
+
+<!--ajax 로 테스트 할때는 action 속성 지워주세요-->
+<form id="FILE_FORM" method="post" enctype="multipart/form-data" action="/api/lesson/add">
+    <input type="file" id="video" name="video">
+    <!--
+
+        $UserId = $this->request->query('uid');
+        $ClassId = $this->request->query('cid');
+        $Title = $this->request->query('title');
+        $Subject = $this->request->query('subject');
+        $Grade = $this->request->query('grade');
+        $Semester = $this->request->query('semester');
+        $Unit = $this->request->query('unit');
+        $Explain = $this->request->query('explain');
+        $Link = $this->request->query('link');
+        -->
+    uid : <input type="text" name="uid"> <br>
+    cid : <input type="text" name="cid"> <br>
+    title : <input type="text" name="title"> <br>
+    subject : <input type="text" name="subject"> <br>
+    grade : <input type="text" name="grade"> <br>
+    semester : <input type="text" name="semester"> <br>
+    unit : <input type="text" name="unit"> <br>
+    explain : <input type="text" name="explain"> <br>
+    link : <input type="text" name="link"> <br>
+
+    <!--ajax Version-->
+    <!--<a class="ui-shadow ui-btn ui-corner-all" href="javascript:uploadFile();">전송</a>-->
+
+    <!--Form action Version-->
+    <input type="submit" value="전송">
+</form>
+
+
+</body>
+</html>

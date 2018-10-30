@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script>
+        var socket = new io(location.origin.replace(':'+location.port, '') + ':3030')
+        socket.on('connect', function(data){
+            console.log('connect location.pathname.split('/')[2]')
+            socket.emit('join', {name : location.pathname.split('/')[2]})
+        })
+        socket.on('upload', function(data){
+            document.getElementById("chats").innerHTML+=data.user + ' : ' +data.message + '\n'
+        })
+        socket.on('errors', function(error){
+            alert(error)
+        })
+
+        function uploadData(){
+            let data = {
+                user : document.getElementById("User").value,
+                message : document.getElementById("Message").value
+            }
+            document.getElementById("Message").value = ""
+            socket.emit("upload", data)
+            
+            document.getElementById("chats").innerHTML+=data.user + ' : ' +data.message + '\n'
+        }
+    </script>
+    <title>Socket Test</title>
+</head>
+
+<body>
+    <input type="text" id="User" style="width:60px">: 
+    <input type="text" id="Message"> <input type="button" value="보내기" onclick="uploadData()"> <br>
+    <textarea id="chats" cols="30" rows="10"></textarea>
+</body>
+
+</html>
