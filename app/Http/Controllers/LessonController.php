@@ -142,4 +142,11 @@ class LessonController
         $quiz = new Quiz();
         return $quiz->resultQuiz($qid);
     }
+
+    public function getLessonByTitle(){
+        $cid = $this->request->query('cid');
+        $title = $this->request->query('title');
+
+        return Lesson::getLessonByTitle($cid,$title);
+    }
 }

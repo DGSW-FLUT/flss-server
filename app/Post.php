@@ -34,6 +34,14 @@ class Post
         $this->readOnly = $readOnly;
     }
 
+    public function deletePost($pid){
+        try{
+            $mid = DB::table('Post')->where('Pid','=',$pid)->pluck('Mid')[0];
+            return DB::table('Cloud')->where('Mid','=',$mid)->delete();
+        }catch(Exception $e){
+            return DB::table('Post')->where('Pid','=',$pid)->delete();
+        }
+    }
     public function changeReadOnly($pid,$readOnly){
         try {
             DB::table('Post')->where('Pid', '=', $pid)->update(['ReadOnly' => $readOnly]);
@@ -108,13 +116,24 @@ class Post
         }
     }
 
-    public function getDataByTitle($cid, $title){
-        return DB::table('Post')->select()
-            ->select('Post.Pid','User.Uid','User.Name','Cloud.Mid','Cloud.File','Cloud.Name as FileName','Post.Title','Post.Content','Post.UploadTime')
-            ->join('Cloud', 'Cloud.Mid', '=', 'Post.Mid')
-            ->join('User', 'User.Uid', '=', 'Post.Uid')
-            ->orderByDesc('UploadTime')
-            ->where('Post.Title','=', "%".$title."%")
-            ->where('Post.Cid', '=', $cid)->get();
+    public function getDataByTitle($cid, $title,$readOnly){
+        if($readOnly == 'teacher'){
+            return DB::table('Post')->select()
+                ->select('Post.Pid','User.Uid','User.Name','Cloud.Mid','Cloud.File','Cloud.Name as FileName','Post.Title','Post.Content','Post.UploadTime')
+                ->join('Cloud', 'Cloud.Mid', '=', 'Post.Mid')
+                ->join('User', 'User.Uid', '=', 'Post.Uid')
+                ->orderByDesc('UploadTime')
+                ->where('Post.Title','Like', "%".$title."%")
+                ->where('Post.Cid', '=', $cid)->get();
+        } else {
+            return DB::table('Post')->select()
+                ->select('Post.Pid', 'User.Uid', 'User.Name', 'Cloud.Mid', 'Cloud.File', 'Cloud.Name as FileName', 'Post.Title', 'Post.Content', 'Post.UploadTime')
+                ->join('Cloud', 'Cloud.Mid', '=', 'Post.Mid')
+                ->join('User', 'User.Uid', '=', 'Post.Uid')
+                ->orderByDesc('UploadTime')
+                ->where('Post.Title', 'Like', "%" . $title . "%")
+                ->where('Post.ReadOnly','=','student')
+                ->where('Post.Cid', '=', $cid)->get();
+        }
     }
 }

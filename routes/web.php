@@ -67,6 +67,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('solveQuiz', 'LessonController@solveQuiz');
 
         $router->get('resultQuiz', 'LessonController@resultQuiz');
+
+        $router->get('getLessonByTitle', 'LessonController@getLessonByTitle');
     });
 
     $router->group(['prefix'=>'data'], function () use ($router){
@@ -76,6 +78,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('getPostList', 'DataController@getPostList');
         $router->get('getDataList', 'DataController@getDataList');
         $router->get('getDataByTitle', 'DataController@getDataByTitle');
+        $router->get('deletePost', 'DataController@deletePost');
         $router->post('changeReadOnly', 'DataController@changeReadOnly');
     });
 
@@ -111,6 +114,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('addComment', 'CommentController@addComment');
         $router->get('showComment', 'CommentController@showComment');
     });
+
+
 });
 
 $router->get('/{route:.*}', function () use ($router) {

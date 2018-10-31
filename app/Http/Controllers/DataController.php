@@ -35,6 +35,12 @@ class DataController
         return $path;
     }
 
+    public function deletePost(){
+        $pid = $this->request->query('pid');
+
+        $post = new Post();
+        return $post->deletePost($pid);
+    }
     public function getPostList(){
         $cid = $this->request->query('cid');
         $readOnly = $this->request->query('readOnly');
@@ -68,9 +74,10 @@ class DataController
     public function getPostByTitle(){
         $title = $this->request->query('title');
         $cid = $this->request->query('cid');
+        $readOnly = $this->request->query('readOnly');
 
         $post = new Post();
-        return $post->getDataByTitle($cid,$title);
+        return $post->getDataByTitle($cid,$title,$readOnly);
     }
 
     public function addPost(){

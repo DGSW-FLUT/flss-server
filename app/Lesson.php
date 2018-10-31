@@ -83,10 +83,25 @@ class Lesson implements iDBModel
      * @return int
      */
     public function deleteLessonDB(){
-        return DB::table('Lesson')->where('Lno', '=', $this->Lno)->delete();
+        try {
+            $mid = DB::table('Lesson')->where('Lno', '=', $this->Lno)->pluck('Vid')[0];
+            return DB::table('Cloud')->where('Vid', '=', $mid)->delete();
+        }catch(Exception $e){
+            return DB::table('Lesson')->where('Lno', '=', $this->Lno)->delete();
+        }
     }
 
-
+    public static function getLessonByTitle($cid,$title){
+        return DB::table('Lesson')
+            ->select('Lno', 'Vid', 'Lesson.Cid', 'Lesson.Name as LessonName',
+                'Explain', 'Syear', 'Semes', 'Subject.Name as SubjectName',
+                'Unit', 'Owner as OwnerId', 'File', 'Link', 'UpTime')
+            ->join('Cloud', 'Vid', "=", 'Mid')
+            ->join('YearSubject', 'YearSubject.YSid', '=', 'Lesson.YSid')
+            ->join('Subject', 'Subject.Sid', '=', 'YearSubject.Sid')
+            ->where('Lesson.Name', 'Like', "%" . $title . "%")
+            ->where('Lesson.Cid', '=', $cid)->get();
+}
 
     public function insertDB() : int
     {
