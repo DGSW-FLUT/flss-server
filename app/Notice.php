@@ -28,7 +28,7 @@ class Notice
         try {
             return DB::table('Notice')->where('Cid', '=', $cid)->pluck('Contents')[0];
         } catch (Exception $e) {
-            return 'Notice Undefined';
+            return '공지사항이 없습니다.';
         }
     }
 }
