@@ -24,14 +24,15 @@ class NoticeController
         $this->request = $request;
     }
 
-    public function addNotice(){
+    public function addContents(){
         $cid = $this->request->input('cid');
+        $column = $this->request->input('column');
         $notice = $this->request->input('notice');
 
-        return Notice::addNotice($cid, $notice);
+        return Notice::addContents($cid, $column, $notice);
     }
 
-    public function showNotice(){
+    public function showContents(){
         $cid = $this->request->query('cid');
 
         return Notice::showNotice($cid);

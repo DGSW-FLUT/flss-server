@@ -106,8 +106,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     });
 
     $router->group(['prefix'=>'notice'], function () use ($router) {
-        $router->post('addNotice', 'NoticeController@addNotice');
-        $router->get('showNotice', 'NoticeController@showNotice');
+        $router->post('addContents', 'NoticeController@addContents');
+        $router->get('showContents', 'NoticeController@showContents');
     });
 
     $router->group(['prefix'=>'comment'], function () use ($router){
