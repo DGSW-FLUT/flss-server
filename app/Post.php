@@ -124,6 +124,7 @@ class Post
                 ->join('User', 'User.Uid', '=', 'Post.Uid')
                 ->orderByDesc('UploadTime')
                 ->where('Post.Title','Like', "%".$title."%")
+                ->where('Post.ReadOnly', '=', $readOnly)
                 ->where('Post.Cid', '=', $cid)->get();
         } else {
             return DB::table('Post')->select()
